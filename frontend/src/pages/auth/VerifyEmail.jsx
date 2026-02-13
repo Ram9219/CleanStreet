@@ -18,12 +18,14 @@ import LockIcon from '@mui/icons-material/Lock'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import ErrorIcon from '@mui/icons-material/Error'
 import { apiClient } from '../../utils/apiClient'
+import { useAuth } from '../../contexts/AuthContext'
 import toast from 'react-hot-toast'
 
 const VerifyEmail = () => {
   const location = useLocation()
   const navigate = useNavigate()
   const theme = useTheme()
+  const { verifyEmail } = useAuth()
   
   const emailFromState = location.state?.email || ''
   const [email, setEmail] = useState(emailFromState)
@@ -63,19 +65,13 @@ const VerifyEmail = () => {
     setSuccess('')
 
     try {
-      const response = await apiClient.post(
-        '/auth/verify-email',
-        { email, otp },
-        {
-          withCredentials: true,
-          headers: { 'Content-Type': 'application/json' }
-        }
-      )
-
-      if (response.data.success) {
-        setSuccess('✅ Email verified successfully!')
-        toast.success('Email verified! You can now login.')
-        setTimeout(() => navigate('/login'), 2000)
+      const result = await verifyEmail(email, otp)
+      
+      if (result.success) {
+        setSuccess('✅ Email verified successfully! Redirecting to dashboard...')
+        // AuthContext's verifyEmail already handles navigation to /dashboard
+      } else {
+        setError(result.error || 'Verification failed')
       }
     } catch (err) {
       const errorMsg = err.response?.data?.error || 'Verification failed'
