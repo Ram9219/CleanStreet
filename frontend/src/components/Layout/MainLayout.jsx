@@ -732,6 +732,7 @@ import {
   AssignmentTurnedIn
 } from '@mui/icons-material'
 import { useNavigate, useLocation } from 'react-router-dom'
+import { getScopedPath, isScopedPath } from '../../utils/subdomain'
 import { styled } from '@mui/material/styles'
 import logoSvg from '../../assets/images/logo.svg'
 
@@ -841,6 +842,8 @@ const MainLayout = ({ children, toggleColorMode }) => {
   const [snackbar, setSnackbar] = useState({ open: false, message: '', severity: 'info' })
   const [drawerHovered, setDrawerHovered] = useState(false)
   const [expandedSection, setExpandedSection] = useState(null)
+  const isVolunteerScope = isScopedPath('volunteer')
+  const scopedPath = (path) => (isVolunteerScope ? getScopedPath('volunteer', path) : path)
 
   const fetchNotifications = useCallback(async () => {
     if (!user) return
@@ -973,7 +976,7 @@ const MainLayout = ({ children, toggleColorMode }) => {
     try {
       await logout()
       setSnackbar({ open: true, message: 'Logged out successfully', severity: 'success' })
-      navigate('/login')
+      navigate(scopedPath('/login'))
     } catch (error) {
       console.error('Logout failed:', error)
       setSnackbar({ open: true, message: 'Logout failed. Please try again.', severity: 'error' })
@@ -990,93 +993,93 @@ const MainLayout = ({ children, toggleColorMode }) => {
   }
 
   const navItems = [
-    { 
-      label: 'Home', 
-      path: '/home', 
+    {
+      label: 'Home',
+      path: scopedPath('/home'),
       icon: <Home />, 
       show: user?.role === 'volunteer',
       color: 'primary'
     },
-    { 
-      label: 'Dashboard', 
-      path: '/dashboard', 
+    {
+      label: 'Dashboard',
+      path: scopedPath('/dashboard'),
       icon: <Dashboard />, 
       show: user?.role !== 'volunteer',
       color: 'primary'
     },
-    { 
-      label: 'Volunteer Dashboard', 
-      path: '/dashboard', 
+    {
+      label: 'Volunteer Dashboard',
+      path: scopedPath('/dashboard'),
       icon: <Volunteer />, 
       show: user?.role === 'volunteer',
       color: 'primary'
     },
-    { 
-      label: 'Community', 
-      path: '/community', 
+    {
+      label: 'Community',
+      path: scopedPath('/community'),
       icon: <LocationOn />, 
       show: true,
       color: 'warning'
     },
-    { 
-      label: 'My Reports', 
-      path: '/my-reports', 
+    {
+      label: 'My Reports',
+      path: scopedPath('/my-reports'),
       icon: <History />, 
       show: user?.role !== 'volunteer',
       color: 'info'
     },
-    { 
-      label: 'Volunteer Reports', 
-      path: '/reports', 
+    {
+      label: 'Volunteer Reports',
+      path: scopedPath('/reports'),
       icon: <AssignmentTurnedIn />, 
       show: user?.role === 'volunteer',
       color: 'success'
     },
-    { 
-      label: 'Events', 
-      path: '/events', 
+    {
+      label: 'Events',
+      path: scopedPath('/events'),
       icon: <Event />, 
       show: user?.role === 'volunteer',
       color: 'secondary'
     },
-    { 
-      label: 'My Events', 
-      path: '/my-events', 
+    {
+      label: 'My Events',
+      path: scopedPath('/my-events'),
       icon: <CalendarToday />, 
       show: user?.role === 'volunteer',
       color: 'info'
     },
-    { 
-      label: 'Report Issue', 
-      path: '/report-issue', 
+    {
+      label: 'Report Issue',
+      path: scopedPath('/report-issue'),
       icon: <CleanHands />, 
       show: user?.role !== 'volunteer',
       color: 'success'
     },
-    { 
-      label: 'Map', 
-      path: '/map', 
+    {
+      label: 'Map',
+      path: scopedPath('/map'),
       icon: <Map />, 
       show: user?.role !== 'volunteer',
       color: 'secondary'
     },
-    { 
-      label: 'Activity', 
-      path: '/activity', 
+    {
+      label: 'Activity',
+      path: scopedPath('/activity'),
       icon: <Timeline />, 
       show: user?.role !== 'volunteer',
       color: 'info'
     },
-    { 
-      label: 'Analytics', 
-      path: '/analytics', 
+    {
+      label: 'Analytics',
+      path: scopedPath('/analytics'),
       icon: <TrendingUp />, 
       show: user?.role !== 'volunteer',
       color: 'warning'
     },
-    { 
-      label: 'Profile', 
-      path: '/profile', 
+    {
+      label: 'Profile',
+      path: scopedPath('/profile'),
       icon: <Person />, 
       show: true,
       color: 'primary'
@@ -1561,7 +1564,7 @@ const MainLayout = ({ children, toggleColorMode }) => {
                     }}
                   >
                     <MenuItem 
-                      onClick={() => handleNavigation('/profile')}
+                      onClick={() => handleNavigation(scopedPath('/profile'))}
                       sx={{ 
                         display: 'flex', 
                         alignItems: 'center', 
