@@ -16,11 +16,12 @@ import {
 import { useAuth } from '../../contexts/AuthContext'
 import PhotoCamera from '@mui/icons-material/PhotoCamera'
 import toast from 'react-hot-toast'
-import { buildApiUrl } from '../../utils/apiClient'
+import { buildApiUrl, apiClient } from '../../utils/apiClient'
 
 const AdminSettings = () => {
   const { user, refreshUser } = useAuth()
   const [imageUploading, setImageUploading] = useState(false)
+  const [passwordLoading, setPasswordLoading] = useState(false)
   const fileInputRef = useRef(null)
 
   const [preferences, setPreferences] = useState({
@@ -37,18 +38,46 @@ const AdminSettings = () => {
     setMessage('Preferences updated locally (wire to backend when ready).')
   }
 
-  const handlePasswordSubmit = (e) => {
+  const handlePasswordSubmit = async (e) => {
     e.preventDefault()
+    setMessage('')
+    
     if (!passwords.current || !passwords.next || !passwords.confirm) {
       setMessage('Please fill in all password fields.')
+      toast.error('Please fill in all password fields.')
       return
     }
     if (passwords.next !== passwords.confirm) {
       setMessage('New passwords do not match.')
+      toast.error('New passwords do not match.')
       return
     }
-    // TODO: wire to backend password change endpoint
-    setMessage('Password change request prepared (hook API when available).')
+    if (passwords.next.length < 8) {
+      setMessage('New password must be at least 8 characters.')
+      toast.error('New password must be at least 8 characters.')
+      return
+    }
+
+    setPasswordLoading(true)
+    try {
+      const response = await apiClient.post('/admin/force-password-change', {
+        currentPassword: passwords.current,
+        newPassword: passwords.next
+      })
+
+      if (response.data.success) {
+        toast.success('Password changed successfully!')
+        setMessage('Password changed successfully!')
+        setPasswords({ current: '', next: '', confirm: '' })
+        await refreshUser()
+      }
+    } catch (error) {
+      const errorMsg = error.response?.data?.error || 'Failed to change password'
+      setMessage(errorMsg)
+      toast.error(errorMsg)
+    } finally {
+      setPasswordLoading(false)
+    }
   }
 
   const handleProfileImageChange = async (event) => {
@@ -196,7 +225,7 @@ const AdminSettings = () => {
         <Paper sx={{ p: 3 }}>
           <Typography variant="h6" gutterBottom>Security</Typography>
           <Typography variant="body2" color="text.secondary" sx={{ mb: 2 }}>
-            Change password (connect to backend endpoint when available).
+            Change your password for enhanced security.
           </Typography>
           <Box
             component="form"
@@ -208,6 +237,7 @@ const AdminSettings = () => {
               label="Current password"
               value={passwords.current}
               onChange={(e) => setPasswords({ ...passwords, current: e.target.value })}
+              disabled={passwordLoading}
               fullWidth
             />
             <TextField
@@ -215,6 +245,8 @@ const AdminSettings = () => {
               label="New password"
               value={passwords.next}
               onChange={(e) => setPasswords({ ...passwords, next: e.target.value })}
+              disabled={passwordLoading}
+              helperText="Must be at least 8 characters"
               fullWidth
             />
             <TextField
@@ -222,14 +254,18 @@ const AdminSettings = () => {
               label="Confirm new password"
               value={passwords.confirm}
               onChange={(e) => setPasswords({ ...passwords, confirm: e.target.value })}
+              disabled={passwordLoading}
               fullWidth
             />
             <Stack direction="row" spacing={1}>
-              <Button type="submit" variant="contained">Save</Button>
+              <Button type="submit" variant="contained" disabled={passwordLoading}>
+                {passwordLoading ? 'Saving...' : 'Save'}
+              </Button>
               <Button
                 type="button"
                 variant="text"
                 onClick={() => setPasswords({ current: '', next: '', confirm: '' })}
+                disabled={passwordLoading}
               >
                 Cancel
               </Button>

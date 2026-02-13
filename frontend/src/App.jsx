@@ -30,6 +30,7 @@ import AdminReports from './pages/admin/Reports'
 import AdminSettings from './pages/admin/Settings'
 import AdminPendingVolunteers from './pages/admin/PendingVolunteers'
 import AdminLogin from './pages/admin/Login'
+import ChangePassword from './pages/admin/ChangePassword'
 import SetupWizard from './components/setup/SetupWizard'
 import ReportIssue from './pages/ReportIssue'
 import About from './pages/About'
@@ -166,6 +167,11 @@ function App() {
                 <Route path="/" element={<Navigate to="/home" />} />
                 <Route path="/setup" element={<SetupWizard />} />
                 <Route path="/login" element={<PublicLayout><AdminLogin /></PublicLayout>} />
+                <Route path="/change-password" element={
+                  <ProtectedRoute adminOnly>
+                    <ChangePassword />
+                  </ProtectedRoute>
+                } />
                 <Route path="/home" element={
                   <ProtectedRoute adminOnly>
                     <AdminLayout>
@@ -385,6 +391,11 @@ function App() {
             {/* Admin Path Routes */}
             <Route path="/admin" element={<Navigate to="/admin/login" />} />
             <Route path="/admin/login" element={<PublicLayout><AdminLogin /></PublicLayout>} />
+            <Route path="/admin/change-password" element={
+              <ProtectedRoute adminOnly>
+                <ChangePassword />
+              </ProtectedRoute>
+            } />
             <Route path="/admin/home" element={
               <ProtectedRoute adminOnly>
                 <AdminLayout>
