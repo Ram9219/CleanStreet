@@ -2232,26 +2232,27 @@ const ReportIssue = () => {
 
       // Prepare report data with Cloudinary images
       const reportData = {
-        category,
-        title,
-        description,
-        priority,
+        category: category || '',
+        title: title || '',
+        description: description || '',
+        priority: priority || 'medium',
         latitude: lat,
         longitude: lng,
-        address,
-        locationDetails,
-        isAnonymous,
-        allowComments,
+        address: address || '',
+        locationDetails: locationDetails || '',
+        isAnonymous: isAnonymous || false,
+        allowComments: allowComments !== false,
         // Include Cloudinary images
         images: images
           .filter(img => img.uploaded !== false && img.url)
           .map(img => ({
             url: img.url,
             public_id: img.public_id
-          }))
+          })) || []
       }
 
       console.log('Submitting report data:', reportData)
+      console.log('All fields defined:', Object.entries(reportData).every(([k, v]) => v !== undefined))
 
       // Submit report to API
       const response = await apiClient.post('/reports/create', reportData, {
