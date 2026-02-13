@@ -1464,6 +1464,13 @@ const PublicLayout = ({ children }) => {
   const { isAuthenticated, user, logout } = useAuth()
   const isAdminScope = isScopedPath('admin')
   const isVolunteerScope = isScopedPath('volunteer')
+  const isAdminUser = user?.role === 'admin' || user?.role === 'super-admin'
+  const isVolunteerUser = user?.role === 'volunteer'
+  const scopedAuth = isAdminScope
+    ? isAuthenticated && isAdminUser
+    : isVolunteerScope
+      ? isAuthenticated && isVolunteerUser
+      : isAuthenticated
   const showReportButton = !isAdminScope && !isVolunteerScope
   const logoTo = isAdminScope
     ? getScopedPath('admin', '/login')
@@ -1475,7 +1482,7 @@ const PublicLayout = ({ children }) => {
   const navLinks = useMemo(() => {
     if (isAdminScope) {
       const links = []
-      if (isAuthenticated) {
+      if (scopedAuth) {
         links.push({ to: getScopedPath('admin', '/dashboard'), label: 'Dashboard', icon: PersonIcon })
       }
       links.push({ to: getScopedPath('admin', '/login'), label: 'Admin Login', icon: LoginIcon })
@@ -1483,7 +1490,7 @@ const PublicLayout = ({ children }) => {
     }
 
     if (isVolunteerScope) {
-      if (!isAuthenticated) {
+      if (!scopedAuth) {
         return [
           { to: getScopedPath('volunteer', '/login'), label: 'Login', icon: LoginIcon },
           { to: getScopedPath('volunteer', '/register'), label: 'Register', icon: PersonIcon }
@@ -1496,14 +1503,14 @@ const PublicLayout = ({ children }) => {
       { to: '/', label: 'Home', icon: HomeIcon },
     ]
 
-    if (!isAuthenticated) {
+    if (!scopedAuth) {
       links.push({ to: '/login', label: 'Login', icon: LoginIcon })
     } else {
       links.push({ to: '/dashboard', label: 'Dashboard', icon: PersonIcon })
     }
 
     return links
-  }, [isAuthenticated, isAdminScope, isVolunteerScope])
+  }, [isAuthenticated, isAdminScope, isVolunteerScope, scopedAuth])
 
   // Memoized callbacks
   const handleDrawerToggle = useCallback(() => {
@@ -1511,12 +1518,12 @@ const PublicLayout = ({ children }) => {
   }, [])
 
   const handleReportIssue = useCallback(() => {
-    if (isAuthenticated) {
+    if (scopedAuth) {
       navigate('/report-issue')
     } else {
       navigate('/login', { state: { from: '/report-issue' } })
     }
-  }, [navigate, isAuthenticated])
+  }, [navigate, scopedAuth])
 
   const handleLogout = useCallback(() => {
     logout()
@@ -1579,7 +1586,7 @@ const PublicLayout = ({ children }) => {
                     isActive={location.pathname === link.to}
                   />
                 ))}
-                {isAuthenticated && (
+                {scopedAuth && (
                   <ProfileMenu
                     user={user}
                     onLogout={handleLogout}
@@ -1601,7 +1608,7 @@ const PublicLayout = ({ children }) => {
                 {navLinks.length > 1 && (
                   <MoreMenu navLinks={navLinks.slice(1)} />
                 )}
-                {isAuthenticated && (
+                {scopedAuth && (
                   <ProfileMenu
                     user={user}
                     onLogout={handleLogout}
@@ -1645,7 +1652,7 @@ const PublicLayout = ({ children }) => {
           handleReportIssue={handleReportIssue}
           showReportButton={showReportButton}
           theme={theme}
-          isAuthenticated={isAuthenticated}
+          isAuthenticated={scopedAuth}
           user={user}
           onLogout={handleLogout}
         />
