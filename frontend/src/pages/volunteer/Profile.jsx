@@ -57,7 +57,7 @@ const Profile = () => {
       const formDataUpload = new FormData()
       formDataUpload.append('image', file)
 
-      const response = await apiClient.post('/auth/upload-profile-picture', formDataUpload, {
+      const response = await apiClient.post('/volunteers/upload-profile-picture', formDataUpload, {
         headers: { 'Content-Type': 'multipart/form-data' }
       })
 

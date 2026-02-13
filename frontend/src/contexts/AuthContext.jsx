@@ -86,6 +86,22 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const volunteerLogin = async (email, password) => {
+    try {
+      const response = await authClient.post('/volunteers/login', {
+        email,
+        password
+      })
+      
+      setUser(response.data.user)
+      
+      return { success: true, user: response.data.user }
+    } catch (error) {
+      const message = error.response?.data?.error || 'Login failed'
+      throw error
+    }
+  }
+
   const verifyEmail = async (email, otp) => {
     try {
       const response = await authClient.post('/auth/verify-email', {
@@ -166,6 +182,7 @@ export const AuthProvider = ({ children }) => {
     isVolunteer: user?.role === 'volunteer',
     login,
     adminLogin,
+    volunteerLogin,
     register,
     verifyEmail,
     logout,

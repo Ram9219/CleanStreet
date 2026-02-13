@@ -118,7 +118,7 @@ import toast from 'react-hot-toast'
 
 const Login = () => {
   const navigate = useNavigate()
-  const { login } = useAuth()
+  const { volunteerLogin } = useAuth()
   const [loading, setLoading] = useState(false)
   const [error, setError] = useState('')
   const [showPassword, setShowPassword] = useState(false)
@@ -174,7 +174,7 @@ const Login = () => {
     setLoading(true)
 
     try {
-      const result = await login(formData.email, formData.password, rememberMe)
+      const result = await volunteerLogin(formData.email, formData.password, rememberMe)
       
       if (result.success) {
         toast.success('Login successful! Welcome back!')

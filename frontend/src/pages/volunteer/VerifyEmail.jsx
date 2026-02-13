@@ -79,7 +79,7 @@ const VerifyEmailVolunteer = () => {
     try {
       // Step 1: Verify email with OTP
       const verifyResponse = await apiClient.post(
-        '/auth/verify-email',
+        '/volunteers/verify-email',
         { email, otp },
         {
           withCredentials: true,
@@ -98,7 +98,7 @@ const VerifyEmailVolunteer = () => {
         if (storedPassword) {
           try {
             const loginResponse = await apiClient.post(
-              '/auth/login',
+              '/volunteers/login',
               { email, password: storedPassword },
               {
                 withCredentials: true,
@@ -155,7 +155,7 @@ const VerifyEmailVolunteer = () => {
 
     try {
       const response = await apiClient.post(
-        '/auth/resend-otp',
+        '/volunteers/resend-otp',
         { email },
         {
           withCredentials: true,
