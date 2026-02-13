@@ -82,7 +82,7 @@ const PendingVolunteers = () => {
 
   const handleApprove = async () => {
     try {
-      const response = await apiClient.put(
+      const response = await apiClient.post(
         `/admin/volunteers/${selectedVolunteer._id}/verify`,
         {},
         { withCredentials: true }
@@ -101,7 +101,7 @@ const PendingVolunteers = () => {
 
   const handleReject = async () => {
     try {
-      const response = await apiClient.put(
+      const response = await apiClient.post(
         `/admin/volunteers/${selectedVolunteer._id}/reject`,
         { reason: rejectionReason || 'Rejected by admin' },
         { withCredentials: true }
