@@ -2222,14 +2222,22 @@ const ReportIssue = () => {
     setError('')
 
     try {
+      // Ensure location is valid
+      const lat = parseFloat(location[0])
+      const lng = parseFloat(location[1])
+      
+      if (isNaN(lat) || isNaN(lng) || lat < -90 || lat > 90 || lng < -180 || lng > 180) {
+        throw new Error('Invalid location coordinates. Please try selecting the location again.')
+      }
+
       // Prepare report data with Cloudinary images
       const reportData = {
         category,
         title,
         description,
         priority,
-        latitude: location[0],
-        longitude: location[1],
+        latitude: lat,
+        longitude: lng,
         address,
         locationDetails,
         isAnonymous,
@@ -2281,7 +2289,19 @@ const ReportIssue = () => {
 
     } catch (err) {
       console.error('Report submission error:', err.response?.data || err)
-      const errorMsg = err.response?.data?.errors?.[0]?.msg || err.response?.data?.error || err.message || 'Failed to submit complaint'
+      
+      // Extract detailed error message
+      let errorMsg = 'Failed to submit report'
+      if (err.response?.data?.errors && Array.isArray(err.response.data.errors)) {
+        // Express-validator errors
+        const errDetails = err.response.data.errors.map(e => `${e.param}: ${e.msg}`).join(', ')
+        errorMsg = errDetails
+      } else if (err.response?.data?.error) {
+        errorMsg = err.response.data.error
+      } else if (err.message) {
+        errorMsg = err.message
+      }
+      
       setError(errorMsg)
       toast.error(errorMsg)
     } finally {
