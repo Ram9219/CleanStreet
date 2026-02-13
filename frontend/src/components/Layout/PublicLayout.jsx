@@ -13,6 +13,7 @@ import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 import PersonIcon from '@mui/icons-material/Person'
 import LogoutIcon from '@mui/icons-material/Logout'
 import { useAuth } from '../../contexts/AuthContext'
+import { getScopedPath, isScopedPath } from '../../utils/subdomain'
 import logoSvg from '../../assets/images/logo.svg'
 
 // Memoized NavLink component
@@ -98,13 +99,13 @@ const NavLink = memo(({ to, label, icon: Icon, mobile = false, onClick, isActive
 NavLink.displayName = 'NavLink'
 
 // Memoized Logo component
-const Logo = memo(({ onClick }) => {
+const Logo = memo(({ onClick, to = '/' }) => {
   const theme = useTheme()
 
   return (
     <Box 
       component={RouterLink} 
-      to="/" 
+      to={to} 
       onClick={onClick}
       sx={{ 
         display: 'flex', 
@@ -477,6 +478,7 @@ const MobileDrawer = memo(({
   onClose, 
   navLinks, 
   handleReportIssue,
+  showReportButton,
   theme,
   isAuthenticated,
   user,
@@ -541,16 +543,18 @@ const MobileDrawer = memo(({
           )}
         </List>
         
-        <Box sx={{ p: 2, mt: 2 }}>
-          <ReportButton
-            mobile
-            fullWidth
-            onClick={() => {
-              onClose()
-              handleReportIssue()
-            }}
-          />
-        </Box>
+        {showReportButton && (
+          <Box sx={{ p: 2, mt: 2 }}>
+            <ReportButton
+              mobile
+              fullWidth
+              onClick={() => {
+                onClose()
+                handleReportIssue()
+              }}
+            />
+          </Box>
+        )}
       </Box>
     </Drawer>
   )
@@ -566,23 +570,48 @@ const PublicLayout = ({ children }) => {
   const navigate = useNavigate()
   const location = useLocation()
   const { isAuthenticated, user, logout } = useAuth()
+  const isAdminScope = isScopedPath('admin')
+  const isVolunteerScope = isScopedPath('volunteer')
+  const showReportButton = !isAdminScope && !isVolunteerScope
+  const logoTo = isAdminScope
+    ? getScopedPath('admin', '/login')
+    : isVolunteerScope
+      ? getScopedPath('volunteer', '/login')
+      : '/'
 
   // Memoized navLinks array - show dashboard if authenticated, login if not
   const navLinks = useMemo(() => {
+    if (isAdminScope) {
+      const links = []
+      if (isAuthenticated) {
+        links.push({ to: getScopedPath('admin', '/dashboard'), label: 'Dashboard', icon: PersonIcon })
+      }
+      links.push({ to: getScopedPath('admin', '/login'), label: 'Admin Login', icon: LoginIcon })
+      return links
+    }
+
+    if (isVolunteerScope) {
+      if (!isAuthenticated) {
+        return [
+          { to: getScopedPath('volunteer', '/login'), label: 'Login', icon: LoginIcon },
+          { to: getScopedPath('volunteer', '/register'), label: 'Register', icon: PersonIcon }
+        ]
+      }
+      return [{ to: getScopedPath('volunteer', '/dashboard'), label: 'Dashboard', icon: PersonIcon }]
+    }
+
     const links = [
       { to: '/', label: 'Home', icon: HomeIcon },
     ]
-    
+
     if (!isAuthenticated) {
       links.push({ to: '/login', label: 'Login', icon: LoginIcon })
     } else {
-      // Show dashboard link for authenticated users
-      const DashboardIcon = () => <PersonIcon />
-      links.push({ to: '/dashboard', label: 'Dashboard', icon: DashboardIcon })
+      links.push({ to: '/dashboard', label: 'Dashboard', icon: PersonIcon })
     }
-    
+
     return links
-  }, [isAuthenticated])
+  }, [isAuthenticated, isAdminScope, isVolunteerScope])
 
   // Memoized callbacks
   const handleDrawerToggle = useCallback(() => {
@@ -630,7 +659,7 @@ const PublicLayout = ({ children }) => {
         <Container maxWidth="lg">
           <Toolbar disableGutters sx={{ display: 'flex', justifyContent: 'space-between', py: 1 }}>
             {/* Logo */}
-            <Logo onClick={handleLogoClick} />
+            <Logo onClick={handleLogoClick} to={logoTo} />
 
             {/* Desktop Navigation */}
             {!isMobile ? (
@@ -650,7 +679,7 @@ const PublicLayout = ({ children }) => {
                     onLogout={handleLogout}
                   />
                 )}
-                <ReportButton onClick={handleReportIssue} />
+                {showReportButton && <ReportButton onClick={handleReportIssue} />}
               </Box>
             ) : (
               // Mobile Menu Button
@@ -680,6 +709,7 @@ const PublicLayout = ({ children }) => {
           onClose={handleDrawerToggle}
           navLinks={navLinks}
           handleReportIssue={handleReportIssue}
+          showReportButton={showReportButton}
           theme={theme}
           isAuthenticated={isAuthenticated}
           user={user}
