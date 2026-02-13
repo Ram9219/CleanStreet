@@ -53,6 +53,7 @@ import CreateEvent from './pages/volunteer/CreateEvent'
 
 // Components
 import ProtectedRoute from './components/Auth/ProtectedRoute'
+import SetupRedirect from './components/Auth/SetupRedirect'
 
 function App() {
   const [mode, setMode] = useState('light')
@@ -82,11 +83,12 @@ function App() {
       <Toaster position="top-right" />
       <Router>
         <AuthProvider>
-          <Routes>
-            {/* Volunteer Subdomain Routes */}
-            {isVolunteerSubdomain && (
-              <>
-                <Route path="/" element={<Navigate to="/login" />} />
+          <SetupRedirect>
+            <Routes>
+              {/* Volunteer Subdomain Routes */}
+              {isVolunteerSubdomain && (
+                <>
+                  <Route path="/" element={<Navigate to="/login" />} />
                 <Route path="/login" element={<PublicLayout><VolunteerLogin /></PublicLayout>} />
                 <Route path="/register" element={<PublicLayout><VolunteerRegister /></PublicLayout>} />
                 <Route path="/forgot-password" element={<PublicLayout><VolunteerForgotPassword /></PublicLayout>} />
@@ -441,6 +443,7 @@ function App() {
             } />
             <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
+          </SetupRedirect>
         </AuthProvider>
       </Router>
     </ThemeProvider>
