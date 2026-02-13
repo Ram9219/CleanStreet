@@ -1628,31 +1628,6 @@ const PublicLayout = ({ children }) => {
                   />
                 )}
                 {showReportButton && <ReportButton onClick={handleReportIssue} />}
-                <Button
-                  variant="contained"
-                  startIcon={<VolunteerActivismIcon />}
-                  onClick={handleVolunteerRedirect}
-                  size="small"
-                  sx={{
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    color: 'white',
-                    textTransform: 'none',
-                    fontWeight: 600,
-                    borderRadius: 2,
-                    py: 1,
-                    px: 2,
-                    ml: 1,
-                    boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
-                    '&:hover': {
-                      background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
-                      transform: 'translateY(-2px)',
-                      boxShadow: '0 6px 20px rgba(102, 126, 234, 0.4)'
-                    },
-                    transition: 'all 0.3s ease'
-                  }}
-                >
-                  Volunteer
-                </Button>
               </Box>
             ) : isTablet ? (
               // Tablet Navigation - Condensed
@@ -1680,31 +1655,6 @@ const PublicLayout = ({ children }) => {
                     size="small"
                   />
                 )}
-                <Button
-                  variant="contained"
-                  startIcon={<VolunteerActivismIcon />}
-                  onClick={handleVolunteerRedirect}
-                  size="small"
-                  sx={{
-                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
-                    color: 'white',
-                    textTransform: 'none',
-                    fontWeight: 600,
-                    borderRadius: 2,
-                    py: 1,
-                    px: 2,
-                    ml: 1,
-                    boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
-                    '&:hover': {
-                      background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
-                      transform: 'translateY(-2px)',
-                      boxShadow: '0 6px 20px rgba(102, 126, 234, 0.4)'
-                    },
-                    transition: 'all 0.3s ease'
-                  }}
-                >
-                  Volunteer
-                </Button>
               </Box>
             ) : (
               // Mobile Menu Button
@@ -1743,6 +1693,71 @@ const PublicLayout = ({ children }) => {
           onLogout={handleLogout}
         />
       )}
+
+      {/* Volunteer Redirect Button - Below Navbar on Right Side */}
+      <Box
+        sx={{
+          position: 'fixed',
+          top: { xs: 72, sm: 80, md: 88 },
+          right: { xs: 12, sm: 20, md: 32 },
+          zIndex: 30,
+          animation: 'float 3s ease-in-out infinite',
+          '@keyframes float': {
+            '0%, 100%': { transform: 'translateY(0px)' },
+            '50%': { transform: 'translateY(-8px)' }
+          }
+        }}
+      >
+        <Button
+          variant="contained"
+          size="large"
+          startIcon={<VolunteerActivismIcon />}
+          onClick={handleVolunteerRedirect}
+          sx={{
+            background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+            color: 'white',
+            px: { xs: 2, sm: 3, md: 4 },
+            py: { xs: 1, sm: 1.2 },
+            borderRadius: 3,
+            fontWeight: 700,
+            fontSize: { xs: '0.8rem', sm: '0.95rem', md: '1rem' },
+            minWidth: 'fit-content',
+            whiteSpace: 'nowrap',
+            boxShadow: '0 10px 30px rgba(102, 126, 234, 0.4)',
+            position: 'relative',
+            overflow: 'hidden',
+            '&::before': {
+              content: '""',
+              position: 'absolute',
+              top: 0,
+              left: 0,
+              right: 0,
+              bottom: 0,
+              background: 'linear-gradient(45deg, transparent, rgba(255,255,255,0.3), transparent)',
+              transform: 'translateX(-100%)',
+            },
+            '&:hover': {
+              transform: 'translateY(-4px) scale(1.05)',
+              boxShadow: '0 15px 40px rgba(102, 126, 234, 0.6)',
+              '&::before': {
+                animation: 'shimmer 0.8s ease'
+              }
+            },
+            '@keyframes shimmer': {
+              '0%': { transform: 'translateX(-100%)' },
+              '100%': { transform: 'translateX(100%)' }
+            },
+            transition: 'all 0.3s ease'
+          }}
+        >
+          <Box sx={{ display: { xs: 'none', sm: 'inline' } }}>
+            Join as Volunteer
+          </Box>
+          <Box sx={{ display: { xs: 'inline', sm: 'none' } }}>
+            Volunteer
+          </Box>
+        </Button>
+      </Box>
 
       {/* Main Content */}
       <Box 
