@@ -755,6 +755,7 @@ import ReportProblemIcon from '@mui/icons-material/ReportProblem'
 import PersonIcon from '@mui/icons-material/Person'
 import LogoutIcon from '@mui/icons-material/Logout'
 import MoreVertIcon from '@mui/icons-material/MoreVert'
+import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism'
 import { useAuth } from '../../contexts/AuthContext'
 import { getScopedPath, isScopedPath } from '../../utils/subdomain'
 import logoSvg from '../../assets/images/logo.svg'
@@ -1350,6 +1351,7 @@ const MobileDrawer = memo(({
   onClose, 
   navLinks, 
   handleReportIssue,
+  handleVolunteerRedirect,
   showReportButton,
   theme,
   isAuthenticated,
@@ -1444,6 +1446,35 @@ const MobileDrawer = memo(({
             />
           </Box>
         )}
+
+        <Box sx={{ p: 2, mt: 2 }}>
+          <Button
+            fullWidth
+            variant="contained"
+            startIcon={<VolunteerActivismIcon />}
+            onClick={() => {
+              onClose()
+              handleVolunteerRedirect()
+            }}
+            sx={{
+              background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+              color: 'white',
+              textTransform: 'none',
+              fontWeight: 600,
+              borderRadius: 2,
+              py: 1.5,
+              boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
+              '&:hover': {
+                background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
+                transform: 'translateY(-2px)',
+                boxShadow: '0 6px 20px rgba(102, 126, 234, 0.4)'
+              },
+              transition: 'all 0.3s ease'
+            }}
+          >
+            Join as Volunteer
+          </Button>
+        </Box>
       </Box>
     </Drawer>
   )
@@ -1530,6 +1561,10 @@ const PublicLayout = ({ children }) => {
     navigate('/')
   }, [logout, navigate])
 
+  const handleVolunteerRedirect = useCallback(() => {
+    navigate(getScopedPath('volunteer', '/'))
+  }, [navigate])
+
   const handleLogoClick = useCallback(() => {
     if (mobileOpen) {
       setMobileOpen(false)
@@ -1593,6 +1628,31 @@ const PublicLayout = ({ children }) => {
                   />
                 )}
                 {showReportButton && <ReportButton onClick={handleReportIssue} />}
+                <Button
+                  variant="contained"
+                  startIcon={<VolunteerActivismIcon />}
+                  onClick={handleVolunteerRedirect}
+                  size="small"
+                  sx={{
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    color: 'white',
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    borderRadius: 2,
+                    py: 1,
+                    px: 2,
+                    ml: 1,
+                    boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 6px 20px rgba(102, 126, 234, 0.4)'
+                    },
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  Volunteer
+                </Button>
               </Box>
             ) : isTablet ? (
               // Tablet Navigation - Condensed
@@ -1620,6 +1680,31 @@ const PublicLayout = ({ children }) => {
                     size="small"
                   />
                 )}
+                <Button
+                  variant="contained"
+                  startIcon={<VolunteerActivismIcon />}
+                  onClick={handleVolunteerRedirect}
+                  size="small"
+                  sx={{
+                    background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+                    color: 'white',
+                    textTransform: 'none',
+                    fontWeight: 600,
+                    borderRadius: 2,
+                    py: 1,
+                    px: 2,
+                    ml: 1,
+                    boxShadow: '0 4px 15px rgba(102, 126, 234, 0.3)',
+                    '&:hover': {
+                      background: 'linear-gradient(135deg, #764ba2 0%, #667eea 100%)',
+                      transform: 'translateY(-2px)',
+                      boxShadow: '0 6px 20px rgba(102, 126, 234, 0.4)'
+                    },
+                    transition: 'all 0.3s ease'
+                  }}
+                >
+                  Volunteer
+                </Button>
               </Box>
             ) : (
               // Mobile Menu Button
@@ -1650,6 +1735,7 @@ const PublicLayout = ({ children }) => {
           onClose={handleDrawerToggle}
           navLinks={navLinks}
           handleReportIssue={handleReportIssue}
+          handleVolunteerRedirect={handleVolunteerRedirect}
           showReportButton={showReportButton}
           theme={theme}
           isAuthenticated={scopedAuth}
