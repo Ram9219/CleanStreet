@@ -1602,7 +1602,7 @@ const Home = () => {
   // Memoized data
   const features = useMemo(() => [
     {
-      icon: <ReportIcon sx={{ fontSize: { xs: 40, sm: 48, md: 56 }} />,
+      icon: <ReportIcon sx={{ fontSize: { xs: 40, sm: 48, md: 56 } }} />,
       title: 'Report Issues Instantly',
       description: 'Document civic problems with photos, location pins, and detailed descriptions.',
       color: '#FF6B6B',
@@ -1612,7 +1612,7 @@ const Home = () => {
       path: '/report-issue'
     },
     {
-      icon: <TrackChangesIcon sx={{ fontSize: { xs: 40, sm: 48, md: 56 }} />,
+      icon: <TrackChangesIcon sx={{ fontSize: { xs: 40, sm: 48, md: 56 } }} />,
       title: 'Track Real-time Progress',
       description: 'Follow your report from submission to resolution with live status updates.',
       color: '#4ECDC4',
@@ -1622,7 +1622,7 @@ const Home = () => {
       path: '/track'
     },
     {
-      icon: <VolunteerActivismIcon sx={{ fontSize: { xs: 40, sm: 48, md: 56 }} />,
+      icon: <VolunteerActivismIcon sx={{ fontSize: { xs: 40, sm: 48, md: 56 } }} />,
       title: 'Community Collaboration',
       description: 'Vote, comment, and work together with neighbors and local authorities.',
       color: '#FFD166',
@@ -1632,7 +1632,7 @@ const Home = () => {
       path: '/community'
     },
     {
-      icon: <GpsFixedIcon sx={{ fontSize: { xs: 40, sm: 48, md: 56 }} />,
+      icon: <GpsFixedIcon sx={{ fontSize: { xs: 40, sm: 48, md: 56 } }} />,
       title: 'Smart AI Routing',
       description: 'Automated assignment to relevant municipal departments for faster resolution.',
       color: '#06D6A0',
@@ -1690,28 +1690,28 @@ const Home = () => {
     { 
       value: '75K+', 
       label: 'Active Citizens', 
-      icon: <GroupsIcon sx={{ fontSize: { xs: 30, sm: 40 }} />,
+      icon: <GroupsIcon sx={{ fontSize: { xs: 30, sm: 40 } }} />,
       change: '+2,500 this week',
       color: '#667eea'
     },
     { 
       value: '96%', 
       label: 'Satisfaction Rate', 
-      icon: <EmojiEventsIcon sx={{ fontSize: { xs: 30, sm: 40 }} />,
+      icon: <EmojiEventsIcon sx={{ fontSize: { xs: 30, sm: 40 } }} />,
       change: 'Highest in category',
       color: '#764ba2'
     },
     { 
       value: '45', 
       label: 'Cities Covered', 
-      icon: <LocationOnIcon sx={{ fontSize: { xs: 30, sm: 40 }} />,
+      icon: <LocationOnIcon sx={{ fontSize: { xs: 30, sm: 40 } }} />,
       change: 'Across 5 countries',
       color: '#FF6B6B'
     },
     { 
       value: '2.8M+', 
       label: 'Issues Resolved', 
-      icon: <CheckCircleIcon sx={{ fontSize: { xs: 30, sm: 40 }} />,
+      icon: <CheckCircleIcon sx={{ fontSize: { xs: 30, sm: 40 } }} />,
       change: 'Since 2020',
       color: '#06D6A0'
     }
