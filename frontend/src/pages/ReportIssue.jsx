@@ -637,17 +637,20 @@ const ReportIssue = () => {
       return
     }
 
-    if (!category || !title || !description) {
+    const trimmedTitle = title.trim()
+    const trimmedDescription = description.trim()
+
+    if (!category || !trimmedTitle || !trimmedDescription) {
       setError('Please complete all required fields')
       return
     }
 
-    if (title.length < 5) {
+    if (trimmedTitle.length < 5) {
       setError('Issue title must be at least 5 characters long')
       return
     }
 
-    if (description.length < 10) {
+    if (trimmedDescription.length < 10) {
       setError('Issue description must be at least 10 characters long')
       return
     }
@@ -664,8 +667,8 @@ const ReportIssue = () => {
     try {
       const reportData = {
         category: category,
-        title: title,
-        description: description,
+        title: trimmedTitle,
+        description: trimmedDescription,
         priority: priority,
         latitude: location[0],
         longitude: location[1],
