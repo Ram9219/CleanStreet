@@ -115,6 +115,7 @@ import {
 import { apiClient } from '../../utils/apiClient'
 import { useAuth } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { getScopedPath } from '../../utils/subdomain'
 import { motion, AnimatePresence } from 'framer-motion'
 
 const AdminDashboard = () => {
@@ -211,7 +212,7 @@ const AdminDashboard = () => {
     if (isAuthenticated && isAdmin && user) {
       fetchDashboardData()
     } else {
-      navigate('/login')
+      navigate(getScopedPath('admin', '/login'))
     }
   }, [isAuthenticated, isAdmin, user])
 
@@ -419,7 +420,7 @@ const AdminDashboard = () => {
 
   const handleLogout = () => {
     logout()
-    navigate('/login')
+    // Navigation is handled by the logout function
   }
 
   const getInitials = (name) => {

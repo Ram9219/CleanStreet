@@ -2,6 +2,7 @@ import React, { createContext, useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
 import toast from 'react-hot-toast'
 import { apiClient } from '../utils/apiClient'
+import { getSubdomain, getScopedPath } from '../utils/subdomain'
 
 const AuthContext = createContext({})
 
@@ -148,8 +149,23 @@ export const AuthProvider = ({ children }) => {
   const logout = async () => {
     try {
       await authClient.post('/auth/logout')
+      
+      // Determine which login page to redirect to based on user role
+      const subdomain = getSubdomain()
+      const pathname = window.location.pathname
+      const isAdminContext = subdomain === 'admin' || pathname.startsWith('/admin')
+      const isVolunteerContext = subdomain === 'volunteer' || pathname.startsWith('/volunteer')
+      
       setUser(null)
-      navigate('/login')
+      
+      if (isAdminContext) {
+        navigate(getScopedPath('admin', '/login'))
+      } else if (isVolunteerContext) {
+        navigate(getScopedPath('volunteer', '/login'))
+      } else {
+        navigate('/login')
+      }
+      
       toast.success('Logged out successfully')
     } catch (error) {
       toast.error('Logout failed')

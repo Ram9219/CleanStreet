@@ -2,7 +2,7 @@ import React from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { CircularProgress, Box } from '@mui/material'
-import { getScopedPath, isScopedPath } from '../../utils/subdomain'
+import { getScopedPath, isScopedPath, getSubdomain } from '../../utils/subdomain'
 
 const ProtectedRoute = ({ 
   children, 
@@ -11,6 +11,7 @@ const ProtectedRoute = ({
   requireVolunteerVerified = false 
 }) => {
   const { user, loading, isAuthenticated, isAdmin } = useAuth()
+  
   if (loading) {
     return (
       <Box
@@ -27,6 +28,24 @@ const ProtectedRoute = ({
   }
 
   if (!isAuthenticated) {
+    // Determine the correct login path based on current context
+    const subdomain = getSubdomain()
+    const pathname = window.location.pathname || ''
+    
+    // Check if we're on admin routes (subdomain or path)
+    const isAdminContext = subdomain === 'admin' || pathname.startsWith('/admin')
+    // Check if we're on volunteer routes (subdomain or path)
+    const isVolunteerContext = subdomain === 'volunteer' || pathname.startsWith('/volunteer')
+    
+    if (isAdminContext) {
+      return <Navigate to={getScopedPath('admin', '/login')} replace />
+    }
+    
+    if (isVolunteerContext) {
+      return <Navigate to={getScopedPath('volunteer', '/login')} replace />
+    }
+    
+    // Default to regular user login
     return <Navigate to="/login" replace />
   }
 
