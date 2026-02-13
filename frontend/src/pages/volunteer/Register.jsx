@@ -5,6 +5,7 @@ import {
   Divider, Card, CardContent, Fade
 } from '@mui/material'
 import { useNavigate } from 'react-router-dom'
+import { getScopedPath } from '../../utils/subdomain'
 import { 
   Person, Email, Lock, Phone, LocationOn, 
   CheckCircle, VolunteerActivism, ArrowBack
@@ -74,7 +75,7 @@ const VolunteerRegister = () => {
         localStorage.setItem(`volunteer_password_${formData.email}`, formData.password)
         
         toast.success('🎉 Registration successful! Check your email for verification.')
-        navigate('/verify-email', { 
+        navigate(getScopedPath('volunteer', '/verify-email'), { 
           state: { 
             email: formData.email,
             name: formData.name
@@ -181,7 +182,7 @@ const VolunteerRegister = () => {
               <Button
                 variant="outlined"
                 startIcon={<ArrowBack />}
-                onClick={() => navigate('/login')}
+                onClick={() => navigate(getScopedPath('volunteer', '/login'))}
                 fullWidth
                 sx={{ 
                   mb: 2,

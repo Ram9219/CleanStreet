@@ -1,11 +1,14 @@
 import React from 'react'
 import { Box, Paper, Typography, Button, Grid, Card, CardContent, Stack } from '@mui/material'
-import { redirectToSubdomain } from '../../utils/subdomain'
+import { useNavigate } from 'react-router-dom'
+import { getScopedPath } from '../../utils/subdomain'
 import { CheckCircle, Star, EmojiEvents } from '@mui/icons-material'
 
 const VolunteerLanding = () => {
+  const navigate = useNavigate()
+
   const handleNavigate = (path) => {
-    redirectToSubdomain('volunteer', path)
+    navigate(getScopedPath('volunteer', path))
   }
 
   return (
@@ -41,7 +44,7 @@ const VolunteerLanding = () => {
                   variant="contained"
                   size="large"
                   fullWidth
-                  onClick={() => handleNavigate('/register/basic')}
+                  onClick={() => handleNavigate('/register?type=basic')}
                 >
                   Join as Basic Volunteer
                 </Button>
@@ -75,7 +78,7 @@ const VolunteerLanding = () => {
                   color="warning"
                   size="large"
                   fullWidth
-                  onClick={() => handleNavigate('/register/verified')}
+                  onClick={() => handleNavigate('/register?type=verified')}
                 >
                   Apply as Verified Volunteer
                 </Button>

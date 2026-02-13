@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Container, Typography, Grid, Card, CardContent, CardActions, Button, Chip, Box, TextField, CircularProgress, Stack } from '@mui/material'
 import { LocationOn, CalendarToday, People, AccessTime, Add } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
+import { getScopedPath } from '../../utils/subdomain'
 import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 import dayjs from 'dayjs'
@@ -67,7 +68,7 @@ const Events = () => {
         <Button 
           variant="contained" 
           startIcon={<Add />}
-          onClick={() => navigate('/create-event')}
+          onClick={() => navigate(getScopedPath('volunteer', '/create-event'))}
         >
           Create Event
         </Button>

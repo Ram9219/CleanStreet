@@ -3,6 +3,7 @@ import { Container, Typography, Box, Grid, Paper, Button, Stack, Chip } from '@m
 import { VolunteerActivism, Event, AssignmentTurnedIn, Person, LocationOn } from '@mui/icons-material'
 import { useAuth } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
+import { getScopedPath } from '../../utils/subdomain'
 
 const VolunteerHome = () => {
   const { user } = useAuth()
@@ -37,7 +38,7 @@ const VolunteerHome = () => {
               <Typography variant="body2" color="text.secondary">
                 Track hours, badges, and overall activity progress.
               </Typography>
-              <Button variant="contained" onClick={() => navigate('/dashboard')}>
+              <Button variant="contained" onClick={() => navigate(getScopedPath('volunteer', '/dashboard'))}>
                 Open Dashboard
               </Button>
             </Stack>
@@ -52,7 +53,7 @@ const VolunteerHome = () => {
               <Typography variant="body2" color="text.secondary">
                 Browse and join cleanup events near you.
               </Typography>
-              <Button variant="outlined" onClick={() => navigate('/events')}>
+              <Button variant="outlined" onClick={() => navigate(getScopedPath('volunteer', '/events'))}>
                 View Events
               </Button>
             </Stack>
@@ -67,7 +68,7 @@ const VolunteerHome = () => {
               <Typography variant="body2" color="text.secondary">
                 Review assigned reports and update status.
               </Typography>
-              <Button variant="outlined" onClick={() => navigate('/reports')}>
+              <Button variant="outlined" onClick={() => navigate(getScopedPath('volunteer', '/reports'))}>
                 View Reports
               </Button>
             </Stack>
@@ -82,7 +83,7 @@ const VolunteerHome = () => {
               <Typography variant="body2" color="text.secondary">
                 See what people are reporting in your area.
               </Typography>
-              <Button variant="outlined" onClick={() => navigate('/community')}>
+              <Button variant="outlined" onClick={() => navigate(getScopedPath('volunteer', '/community'))}>
                 Open Community
               </Button>
             </Stack>
@@ -97,7 +98,7 @@ const VolunteerHome = () => {
               <Typography variant="body2" color="text.secondary">
                 Update your details and profile photo.
               </Typography>
-              <Button variant="outlined" onClick={() => navigate('/profile')}>
+              <Button variant="outlined" onClick={() => navigate(getScopedPath('volunteer', '/profile'))}>
                 View Profile
               </Button>
             </Stack>

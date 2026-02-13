@@ -27,6 +27,7 @@ import {
   AccessTime
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
+import { getScopedPath } from '../../utils/subdomain'
 
 const VerificationPending = () => {
   const { user, refreshUser } = useAuth()
@@ -59,7 +60,7 @@ const VerificationPending = () => {
   // If user is verified, redirect to dashboard
   useEffect(() => {
     if (user?.volunteer_status === 'active') {
-      navigate('/dashboard')
+      navigate(getScopedPath('volunteer', '/dashboard'))
     }
   }, [user?.volunteer_status, navigate])
 

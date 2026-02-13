@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import { useLocation, useNavigate } from 'react-router-dom'
+import { getScopedPath } from '../../utils/subdomain'
 import {
   Container,
   Paper,
@@ -114,7 +115,7 @@ const VerifyEmailVolunteer = () => {
               
               // Redirect to volunteer dashboard after 1 second
               setTimeout(() => {
-                navigate('/dashboard')
+                navigate(getScopedPath('volunteer', '/dashboard'))
               }, 1000)
             }
           } catch (loginErr) {
@@ -122,14 +123,14 @@ const VerifyEmailVolunteer = () => {
             setSuccess('Email verified! Please login with your password.')
             // Fall back to redirect to login page
             setTimeout(() => {
-              navigate('/login')
+              navigate(getScopedPath('volunteer', '/login'))
             }, 2000)
           }
         } else {
           // No stored password, redirect to login
           setSuccess('Email verified! Redirecting to login...')
           setTimeout(() => {
-            navigate('/login')
+            navigate(getScopedPath('volunteer', '/login'))
           }, 2000)
         }
       }

@@ -4,6 +4,7 @@ import { DateTimePicker } from '@mui/x-date-pickers/DateTimePicker'
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider'
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs'
 import { useNavigate } from 'react-router-dom'
+import { getScopedPath } from '../../utils/subdomain'
 import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 import dayjs from 'dayjs'
@@ -59,7 +60,7 @@ const CreateEvent = () => {
       
       if (response.data.success) {
         toast.success('Event created successfully!')
-        navigate('/events')
+        navigate(getScopedPath('volunteer', '/events'))
       }
     } catch (err) {
       console.error('Event creation error:', err)
@@ -173,7 +174,7 @@ const CreateEvent = () => {
           <Stack direction="row" spacing={2} justifyContent="flex-end" sx={{ mt: 3 }}>
             <Button 
               variant="outlined" 
-              onClick={() => navigate('/events')}
+              onClick={() => navigate(getScopedPath('volunteer', '/events'))}
               disabled={loading}
             >
               Cancel

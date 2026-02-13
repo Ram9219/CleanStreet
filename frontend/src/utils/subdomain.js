@@ -53,6 +53,14 @@ export const getSubdomain = () => {
  * Get the appropriate URL for a subdomain
  */
 export const getSubdomainUrl = (subdomain = 'main') => {
+  const envAdminUrl = import.meta.env.VITE_ADMIN_URL
+  const envVolunteerUrl = import.meta.env.VITE_VOLUNTEER_URL
+  const envFrontendUrl = import.meta.env.VITE_FRONTEND_URL
+
+  if (subdomain === 'admin' && envAdminUrl) return envAdminUrl
+  if (subdomain === 'volunteer' && envVolunteerUrl) return envVolunteerUrl
+  if ((subdomain === 'main' || subdomain === 'app') && envFrontendUrl) return envFrontendUrl
+
   const hostname = window.location.hostname
   const port = window.location.port ? `:${window.location.port}` : ''
   const protocol = window.location.protocol
@@ -83,4 +91,27 @@ export const getSubdomainUrl = (subdomain = 'main') => {
 export const redirectToSubdomain = (subdomain = 'main', path = '/') => {
   const url = getSubdomainUrl(subdomain)
   window.location.href = `${url}${path}`
+}
+
+export const isScopedPath = (scope = 'main') => {
+  if (typeof window === 'undefined') return false
+  const currentSubdomain = getSubdomain()
+  if (currentSubdomain === scope) return true
+  const pathname = window.location.pathname || ''
+  return pathname.startsWith(`/${scope}`)
+}
+
+export const getScopedPath = (scope = 'main', path = '/') => {
+  const normalizedPath = path.startsWith('/') ? path : `/${path}`
+  if (typeof window === 'undefined') return normalizedPath
+
+  const currentSubdomain = getSubdomain()
+  if (scope === 'admin' && currentSubdomain !== 'admin') {
+    return `/admin${normalizedPath}`
+  }
+  if (scope === 'volunteer' && currentSubdomain !== 'volunteer') {
+    return `/volunteer${normalizedPath}`
+  }
+
+  return normalizedPath
 }

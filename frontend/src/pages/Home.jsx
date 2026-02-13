@@ -494,7 +494,7 @@ import {
   useTheme, useMediaQuery
 } from '@mui/material'
 import { Link, useNavigate } from 'react-router-dom'
-import { redirectToSubdomain } from '../utils/subdomain'
+import { getScopedPath } from '../utils/subdomain'
 import LocationOnIcon from '@mui/icons-material/LocationOn'
 import ReportIcon from '@mui/icons-material/Report'
 import TrackChangesIcon from '@mui/icons-material/TrackChanges'
@@ -1090,7 +1090,7 @@ const Home = () => {
                     fontWeight: 600,
                     '&:hover': { bgcolor: 'rgba(255,255,255,0.9)' }
                   }}
-                  onClick={() => redirectToSubdomain('volunteer', '/')}
+                  onClick={() => navigate(getScopedPath('volunteer', '/'))}
                 >
                   Learn More
                 </Button>
@@ -1102,7 +1102,7 @@ const Home = () => {
                     fontWeight: 600,
                     '&:hover': { borderColor: 'white', bgcolor: 'rgba(255,255,255,0.1)' }
                   }}
-                  onClick={() => redirectToSubdomain('volunteer', '/Register')}
+                  onClick={() => navigate(getScopedPath('volunteer', '/register'))}
                 >
                   Sign Up Now
                 </Button>

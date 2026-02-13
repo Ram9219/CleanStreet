@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react'
 import { Container, Typography, Grid, Card, CardContent, Box, Button, Chip, CircularProgress, Stack } from '@mui/material'
 import { VolunteerActivism, Event, Assignment, EmojiEvents, CheckCircle } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
+import { getScopedPath } from '../../utils/subdomain'
 import { useAuth } from '../../contexts/AuthContext'
 import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
@@ -150,7 +151,7 @@ const Dashboard = () => {
           <Button 
             variant="contained" 
             fullWidth 
-            onClick={() => navigate('/events')}
+            onClick={() => navigate(getScopedPath('volunteer', '/events'))}
             startIcon={<Event />}
           >
             Browse Events
@@ -160,7 +161,7 @@ const Dashboard = () => {
           <Button 
             variant="outlined" 
             fullWidth 
-            onClick={() => navigate('/MyEvents')}
+            onClick={() => navigate(getScopedPath('volunteer', '/my-events'))}
           >
             My Events
           </Button>
@@ -169,7 +170,7 @@ const Dashboard = () => {
           <Button 
             variant="outlined" 
             fullWidth 
-            onClick={() => navigate('/Reports')}
+            onClick={() => navigate(getScopedPath('volunteer', '/reports'))}
             startIcon={<Assignment />}
           >
             View Reports
@@ -179,7 +180,7 @@ const Dashboard = () => {
           <Button 
             variant="outlined" 
             fullWidth 
-            onClick={() => navigate('/profile')}
+            onClick={() => navigate(getScopedPath('volunteer', '/profile'))}
           >
             My Profile
           </Button>

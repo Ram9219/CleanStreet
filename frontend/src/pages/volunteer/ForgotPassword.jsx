@@ -16,6 +16,7 @@ import {
 } from '@mui/material'
 import { Email, Lock, ArrowBack, Visibility, VisibilityOff } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
+import { getScopedPath } from '../../utils/subdomain'
 import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 
@@ -110,7 +111,7 @@ const ForgotPassword = () => {
 
       if (response.data.success) {
         toast.success('Password reset successful! Please login.')
-        navigate('/login')
+        navigate(getScopedPath('volunteer', '/login'))
       }
     } catch (err) {
       const errorMsg = err.response?.data?.error || 'Failed to reset password'
@@ -129,7 +130,7 @@ const ForgotPassword = () => {
         <Box sx={{ mb: 4 }}>
           <Button
             startIcon={<ArrowBack />}
-            onClick={() => step === 1 ? navigate('/login') : setStep(step - 1)}
+            onClick={() => step === 1 ? navigate(getScopedPath('volunteer', '/login')) : setStep(step - 1)}
             sx={{ mb: 2 }}
           >
             Back

@@ -112,6 +112,7 @@ import { Helmet } from 'react-helmet';
 
 // ... rest of the code remains the same
 import { useNavigate } from 'react-router-dom'
+import { getScopedPath } from '../../utils/subdomain'
 import { useAuth } from '../../contexts/AuthContext'
 import toast from 'react-hot-toast'
 
@@ -178,7 +179,7 @@ const Login = () => {
       if (result.success) {
         toast.success('Login successful! Welcome back!')
         // On volunteer subdomain, use /dashboard not /volunteer/dashboard
-        navigate('/dashboard')
+        navigate(getScopedPath('volunteer', '/dashboard'))
       } else {
         throw new Error(result.error || 'Login failed')
       }
@@ -303,7 +304,7 @@ const Login = () => {
                 label="Remember me"
               />
               <Link 
-                onClick={() => !loading && navigate('/forgot-password')}
+                onClick={() => !loading && navigate(getScopedPath('volunteer', '/forgot-password'))}
                 sx={{ 
                   cursor: loading ? 'not-allowed' : 'pointer',
                   fontWeight: 500, 
@@ -354,7 +355,7 @@ const Login = () => {
               <Typography variant="body2" color="text.secondary">
                 Don't have an account?{' '}
                 <Link 
-                  onClick={() => !loading && navigate('/register')}
+                  onClick={() => !loading && navigate(getScopedPath('volunteer', '/register'))}
                   sx={{ 
                     cursor: loading ? 'not-allowed' : 'pointer',
                     fontWeight: 600, 
