@@ -26,7 +26,7 @@ import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import ErrorIcon from '@mui/icons-material/Error'
 import VerifiedUserIcon from '@mui/icons-material/VerifiedUser'
 import VolunteerActivismIcon from '@mui/icons-material/VolunteerActivism'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 
 const VerifyEmailVolunteer = () => {
@@ -77,8 +77,8 @@ const VerifyEmailVolunteer = () => {
 
     try {
       // Step 1: Verify email with OTP
-      const verifyResponse = await axios.post(
-        '/api/auth/verify-email',
+      const verifyResponse = await apiClient.post(
+        '/auth/verify-email',
         { email, otp },
         {
           withCredentials: true,
@@ -96,8 +96,8 @@ const VerifyEmailVolunteer = () => {
         
         if (storedPassword) {
           try {
-            const loginResponse = await axios.post(
-              '/api/auth/login',
+            const loginResponse = await apiClient.post(
+              '/auth/login',
               { email, password: storedPassword },
               {
                 withCredentials: true,
@@ -153,8 +153,8 @@ const VerifyEmailVolunteer = () => {
     setError('')
 
     try {
-      const response = await axios.post(
-        '/api/auth/resend-otp',
+      const response = await apiClient.post(
+        '/auth/resend-otp',
         { email },
         {
           withCredentials: true,

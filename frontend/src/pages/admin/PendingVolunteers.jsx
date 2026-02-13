@@ -34,7 +34,7 @@ import {
   LocationOn,
   Verified
 } from '@mui/icons-material'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 
 const PendingVolunteers = () => {
@@ -52,7 +52,7 @@ const PendingVolunteers = () => {
   const fetchPendingVolunteers = async () => {
     try {
       setLoading(true)
-      const response = await axios.get('/api/admin/volunteers/pending', {
+      const response = await apiClient.get('/admin/volunteers/pending', {
         withCredentials: true
       })
 
@@ -82,8 +82,8 @@ const PendingVolunteers = () => {
 
   const handleApprove = async () => {
     try {
-      const response = await axios.post(
-        `/api/admin/volunteers/${selectedVolunteer._id}/verify`,
+      const response = await apiClient.put(
+        `/admin/volunteers/${selectedVolunteer._id}/verify`,
         {},
         { withCredentials: true }
       )
@@ -101,8 +101,8 @@ const PendingVolunteers = () => {
 
   const handleReject = async () => {
     try {
-      const response = await axios.post(
-        `/api/admin/volunteers/${selectedVolunteer._id}/reject`,
+      const response = await apiClient.put(
+        `/admin/volunteers/${selectedVolunteer._id}/reject`,
         { reason: rejectionReason || 'Rejected by admin' },
         { withCredentials: true }
       )

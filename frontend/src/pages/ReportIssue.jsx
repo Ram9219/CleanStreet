@@ -83,7 +83,7 @@ import {
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../contexts/AuthContext'
-import axios from 'axios'
+import { apiClient } from '../utils/apiClient'
 import { MapContainer, TileLayer, Marker, Popup, useMapEvents } from 'react-leaflet'
 import 'leaflet/dist/leaflet.css'
 import L from 'leaflet'
@@ -746,7 +746,7 @@ const ReportIssue = () => {
       console.log('Submitting report data:', reportData)
 
       // Submit report to API
-      const response = await axios.post('/api/reports/create', reportData, {
+      const response = await apiClient.post('/reports/create', reportData, {
         withCredentials: true,
         headers: {
           'Content-Type': 'application/json'

@@ -16,7 +16,7 @@ import {
 } from '@mui/material'
 import { Email, Lock, ArrowBack, Visibility, VisibilityOff } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 
 const ForgotPassword = () => {
@@ -44,7 +44,7 @@ const ForgotPassword = () => {
     setLoading(true)
 
     try {
-      const response = await axios.post('/api/volunteers/forgot-password', {
+      const response = await apiClient.post('/volunteers/forgot-password', {
         email: formData.email
       })
 
@@ -67,7 +67,7 @@ const ForgotPassword = () => {
     setLoading(true)
 
     try {
-      const response = await axios.post('/api/volunteers/verify-reset-otp', {
+      const response = await apiClient.post('/volunteers/verify-reset-otp', {
         email: formData.email,
         otp: formData.otp
       })
@@ -102,7 +102,7 @@ const ForgotPassword = () => {
     setLoading(true)
 
     try {
-      const response = await axios.post('/api/volunteers/reset-password', {
+      const response = await apiClient.post('/volunteers/reset-password', {
         email: formData.email,
         otp: formData.otp,
         newPassword: formData.newPassword

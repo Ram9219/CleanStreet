@@ -11,18 +11,12 @@ import {
   ArrowForward, Download
 } from '@mui/icons-material'
 import { useSwipeable } from 'react-swipeable'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 
 dayjs.extend(relativeTime)
-
-const apiClient = axios.create({
-  baseURL: '/api',
-  withCredentials: true,
-  headers: { 'Content-Type': 'application/json' }
-})
 
 const MyEvents = () => {
   const [events, setEvents] = useState([])

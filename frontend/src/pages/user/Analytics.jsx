@@ -27,7 +27,7 @@ import {
 } from '@mui/icons-material'
 import { motion } from 'framer-motion'
 import { useAuth } from '../../contexts/AuthContext'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import { styled } from '@mui/material/styles'
 
 const StatCard = styled(Card)(({ theme, color = 'primary' }) => ({
@@ -70,7 +70,7 @@ const Analytics = () => {
   const fetchAnalytics = async () => {
     setLoading(true)
     try {
-      const response = await axios.get('/api/reports/my-reports', {
+      const response = await apiClient.get('/reports/my-reports', {
         withCredentials: true
       })
 

@@ -17,7 +17,7 @@ import EmailIcon from '@mui/icons-material/Email'
 import LockIcon from '@mui/icons-material/Lock'
 import CheckCircleIcon from '@mui/icons-material/CheckCircle'
 import ErrorIcon from '@mui/icons-material/Error'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 
 const VerifyEmail = () => {
@@ -63,8 +63,8 @@ const VerifyEmail = () => {
     setSuccess('')
 
     try {
-      const response = await axios.post(
-        'http://localhost:5000/api/auth/verify-email',
+      const response = await apiClient.post(
+        '/auth/verify-email',
         { email, otp },
         {
           withCredentials: true,
@@ -97,8 +97,8 @@ const VerifyEmail = () => {
     setSuccess('')
 
     try {
-      const response = await axios.post(
-        'http://localhost:5000/api/auth/resend-otp',
+      const response = await apiClient.post(
+        '/auth/resend-otp',
         { email },
         {
           withCredentials: true,

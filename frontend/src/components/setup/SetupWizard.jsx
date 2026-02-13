@@ -28,10 +28,9 @@ import {
   Settings,
   CloudUpload
 } from '@mui/icons-material'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 
-const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api'
-axios.defaults.withCredentials = true
+apiClient.defaults.withCredentials = true
 
 const SetupWizard = () => {
   const [activeStep, setActiveStep] = useState(0)
@@ -75,7 +74,7 @@ const SetupWizard = () => {
 
   const checkSetupStatus = async () => {
     try {
-      const response = await axios.get(`${API_BASE_URL}/system/status`)
+      const response = await apiClient.get('/system/status')
       setSetupStatus(response.data)
       
       if (!response.data.system?.setupRequired) {
@@ -104,7 +103,7 @@ const SetupWizard = () => {
     setError('')
     
     try {
-      const response = await axios.post('/api/setup/test-database', {
+      const response = await apiClient.post('/setup/test-database', {
         connectionString: formData.database.connectionString
       })
       
@@ -128,7 +127,7 @@ const SetupWizard = () => {
     setError('')
     
     try {
-      const response = await axios.post(`${API_BASE_URL}/setup/super-admin`, {
+      const response = await apiClient.post('/setup/super-admin', {
         email: formData.admin.email,
         password: formData.admin.password,
         name: formData.admin.name
@@ -149,7 +148,7 @@ const SetupWizard = () => {
     setLoading(true)
     
     try {
-      await axios.post('/api/setup/configure', {
+      await apiClient.post('/setup/configure', {
         config: formData.system
       })
       

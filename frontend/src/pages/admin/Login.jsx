@@ -9,7 +9,7 @@ import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 
 const loginSchema = yup.object({
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -35,7 +35,7 @@ const AdminLogin = () => {
   useEffect(() => {
     const checkSystemStatus = async () => {
       try {
-        const response = await axios.get('http://localhost:5000/api/system/status')
+        const response = await apiClient.get('/system/status')
         setSystemStatus(response.data.system)
       } catch (error) {
         console.log('System status check failed')

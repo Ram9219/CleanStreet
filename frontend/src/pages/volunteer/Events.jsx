@@ -2,15 +2,9 @@ import React, { useState, useEffect } from 'react'
 import { Container, Typography, Grid, Card, CardContent, CardActions, Button, Chip, Box, TextField, CircularProgress, Stack } from '@mui/material'
 import { LocationOn, CalendarToday, People, AccessTime, Add } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 import dayjs from 'dayjs'
-
-const apiClient = axios.create({
-  baseURL: '/api',
-  withCredentials: true,
-  headers: { 'Content-Type': 'application/json' }
-})
 
 const Events = () => {
   const navigate = useNavigate()

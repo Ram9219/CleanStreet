@@ -28,7 +28,7 @@ import {
 } from '@mui/material'
 import { Delete, Image as ImageIcon } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import { useAuth } from '../../contexts/AuthContext'
 import toast from 'react-hot-toast'
 
@@ -49,7 +49,7 @@ const Reports = () => {
   const fetchUserReports = async () => {
     try {
       setLoading(true)
-      const response = await axios.get('/api/reports/my-reports', {
+      const response = await apiClient.get('/reports/my-reports', {
         withCredentials: true
       })
 
@@ -100,7 +100,7 @@ const Reports = () => {
 
     setDeleting(true)
     try {
-      const response = await axios.delete(`/api/reports/${reportToDelete._id}`, {
+      const response = await apiClient.delete(`/reports/${reportToDelete._id}`, {
         withCredentials: true
       })
 

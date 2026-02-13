@@ -53,7 +53,7 @@ import {
 import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { styled } from '@mui/material/styles'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 
 // Styled Components
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -135,7 +135,7 @@ const Dashboard = () => {
     const fetchStats = async () => {
       setLoadingStats(true)
       try {
-        const res = await axios.get('/api/reports/my-reports', { withCredentials: true })
+        const res = await apiClient.get('/reports/my-reports', { withCredentials: true })
         const reports = res.data?.reports || []
 
         const reported = reports.length

@@ -16,6 +16,7 @@ import {
 import { useAuth } from '../../contexts/AuthContext'
 import PhotoCamera from '@mui/icons-material/PhotoCamera'
 import toast from 'react-hot-toast'
+import { buildApiUrl } from '../../utils/apiClient'
 
 const AdminSettings = () => {
   const { user, refreshUser } = useAuth()
@@ -64,7 +65,7 @@ const AdminSettings = () => {
       const formDataUpload = new FormData()
       formDataUpload.append('image', file)
 
-      const response = await fetch('/api/auth/upload-profile-picture', {
+      const response = await fetch(buildApiUrl('/auth/upload-profile-picture'), {
         method: 'POST',
         body: formDataUpload,
         credentials: 'include'

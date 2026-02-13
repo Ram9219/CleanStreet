@@ -10,7 +10,7 @@ import {
   CircularProgress,
   Alert,
 } from '@mui/material'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 
 const Issues = () => {
   const [issues, setIssues] = useState([])
@@ -21,7 +21,7 @@ const Issues = () => {
     const fetchIssues = async () => {
       try {
         setLoading(true)
-        const res = await axios.get('/api/reports', { withCredentials: true })
+        const res = await apiClient.get('/reports', { withCredentials: true })
         if (res.data?.success) {
           setIssues(res.data.reports || [])
         } else {

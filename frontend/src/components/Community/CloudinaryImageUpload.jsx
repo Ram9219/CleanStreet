@@ -24,7 +24,7 @@ import {
   CheckCircle,
   Error as ErrorIcon
 } from '@mui/icons-material'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 
 const CloudinaryImageUpload = ({ onImagesChange, maxImages = 5, onCaptureStart }) => {
@@ -156,8 +156,8 @@ const CloudinaryImageUpload = ({ onImagesChange, maxImages = 5, onCaptureStart }
           [file.name]: 0
         }))
 
-        const response = await axios.post(
-          '/api/reports/upload-image',
+        const response = await apiClient.post(
+          '/reports/upload-image',
           formData,
           {
             withCredentials: true,

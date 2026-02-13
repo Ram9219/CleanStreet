@@ -23,7 +23,7 @@ import {
   MoreVert,
   Delete as DeleteIcon,
 } from '@mui/icons-material'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 
 const CommentSection = ({
@@ -60,8 +60,8 @@ const CommentSection = ({
 
     try {
       setSubmitting(true)
-      const response = await axios.post(
-        `/api/reports/${issueId}/comment`,
+      const response = await apiClient.post(
+        `/reports/${issueId}/comment`,
         { text: commentText.trim() },
         { withCredentials: true }
       )
@@ -73,8 +73,8 @@ const CommentSection = ({
         
         // Refresh the main issue to get updated data
         if (onIssueUpdated) {
-          const issueResponse = await axios.get(
-            `/api/reports/community/post/${issueId}`,
+          const issueResponse = await apiClient.get(
+            `/reports/community/post/${issueId}`,
             { withCredentials: true }
           )
           if (issueResponse.data.success) {
@@ -104,8 +104,8 @@ const CommentSection = ({
 
   const handleDeleteComment = async () => {
     try {
-      const response = await axios.delete(
-        `/api/reports/${issueId}/comment/${selectedCommentId}`,
+      const response = await apiClient.delete(
+        `/reports/${issueId}/comment/${selectedCommentId}`,
         { withCredentials: true }
       )
 
@@ -119,8 +119,8 @@ const CommentSection = ({
 
         // Refresh the main issue
         if (onIssueUpdated) {
-          const issueResponse = await axios.get(
-            `/api/reports/community/post/${issueId}`,
+          const issueResponse = await apiClient.get(
+            `/reports/community/post/${issueId}`,
             { withCredentials: true }
           )
           if (issueResponse.data.success) {
@@ -146,8 +146,8 @@ const CommentSection = ({
     }
 
     try {
-      const response = await axios.post(
-        `/api/reports/${issueId}/comment/${commentId}/like`,
+      const response = await apiClient.post(
+        `/reports/${issueId}/comment/${commentId}/like`,
         {},
         { withCredentials: true }
       )

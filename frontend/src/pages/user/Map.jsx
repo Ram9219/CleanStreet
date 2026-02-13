@@ -3,7 +3,7 @@ import { Container, Typography, Box, Paper, Chip, Stack, Button, Divider, alpha 
 import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import L from 'leaflet'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import booleanPointInPolygon from '@turf/boolean-point-in-polygon'
 import 'leaflet/dist/leaflet.css'
 import 'leaflet-draw'
@@ -157,7 +157,7 @@ const Map = () => {
   const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN
 
   useEffect(() => {
-    axios.get('/api/reports', { withCredentials: true })
+    apiClient.get('/reports', { withCredentials: true })
       .then(res => {
         const data = res.data?.reports || res.data || []
         const normalized = data

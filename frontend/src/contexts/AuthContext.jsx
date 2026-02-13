@@ -1,20 +1,11 @@
 import React, { createContext, useState, useContext, useEffect } from 'react'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
 import toast from 'react-hot-toast'
+import { apiClient } from '../utils/apiClient'
 
 const AuthContext = createContext({})
 
-const API_BASE_URL = '/api'
-
-// Create axios instance for auth with proper config
-const authClient = axios.create({
-  baseURL: API_BASE_URL,
-  withCredentials: true,
-  headers: {
-    'Content-Type': 'application/json'
-  }
-})
+const authClient = apiClient
 
 export const useAuth = () => useContext(AuthContext)
 

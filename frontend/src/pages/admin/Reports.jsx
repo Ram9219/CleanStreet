@@ -19,13 +19,7 @@ import {
   DialogActions
 } from '@mui/material'
 import { Refresh, Room, Flag } from '@mui/icons-material'
-import axios from 'axios'
-
-const apiClient = axios.create({
-  baseURL: '/api',
-  withCredentials: true,
-  headers: { 'Content-Type': 'application/json' }
-})
+import { apiClient } from '../../utils/apiClient'
 
 const statusColor = {
   open: 'warning',

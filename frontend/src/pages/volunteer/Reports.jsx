@@ -20,13 +20,7 @@ import {
   TextField
 } from '@mui/material'
 import { Refresh, Room, Person, Email, Phone, CheckCircle, Pending, Cancel } from '@mui/icons-material'
-import axios from 'axios'
-
-const apiClient = axios.create({
-  baseURL: '/api',
-  withCredentials: true,
-  headers: { 'Content-Type': 'application/json' }
-})
+import { apiClient } from '../../utils/apiClient'
 
 const statusColor = {
   open: 'warning',

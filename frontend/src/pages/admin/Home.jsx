@@ -29,17 +29,11 @@ import {
   HourglassEmpty
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import {
   Breadcrumbs,
   Link
 } from '@mui/material'
-
-const apiClient = axios.create({
-  baseURL: '/api',
-  withCredentials: true,
-  headers: { 'Content-Type': 'application/json' }
-})
 
 const AdminHome = () => {
   const theme = useTheme()

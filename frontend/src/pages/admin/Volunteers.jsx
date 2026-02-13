@@ -54,15 +54,9 @@ import {
   HourglassEmpty,
   PlayArrow
 } from '@mui/icons-material'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 import dayjs from 'dayjs'
-
-const apiClient = axios.create({
-  baseURL: '/api',
-  withCredentials: true,
-  headers: { 'Content-Type': 'application/json' }
-})
 
 const AdminVolunteers = () => {
   const [volunteers, setVolunteers] = useState([])

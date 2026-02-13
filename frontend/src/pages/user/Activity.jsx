@@ -23,7 +23,7 @@ import {
 } from '@mui/icons-material'
 import { motion } from 'framer-motion'
 import { useAuth } from '../../contexts/AuthContext'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import { styled } from '@mui/material/styles'
 
 const ActivityCard = styled(Card)(({ theme }) => ({
@@ -54,7 +54,7 @@ const Activity = () => {
     setLoading(true)
     try {
       // Fetch user's reports
-      const reportsRes = await axios.get('/api/reports/my-reports', {
+      const reportsRes = await apiClient.get('/reports/my-reports', {
         withCredentials: true
       })
 

@@ -30,7 +30,7 @@ import {
   LocationOn,
   Category as CategoryIcon,
 } from '@mui/icons-material'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import { useAuth } from '../../contexts/AuthContext'
 import CommentSection from '../../components/Community/CommentSection'
 import IssueCard from '../../components/Community/IssueCard'
@@ -71,7 +71,7 @@ const Community = () => {
         limit: 12,
       }
       
-      const response = await axios.get('/api/reports/community/feed', {
+      const response = await apiClient.get('/reports/community/feed', {
         params,
         withCredentials: true
       })
@@ -103,7 +103,7 @@ const Community = () => {
   const handleOpenDetails = async (issue) => {
     try {
       setCommentsLoading(true)
-      const response = await axios.get(`/api/reports/community/post/${issue._id}`, {
+      const response = await apiClient.get(`/reports/community/post/${issue._id}`, {
         withCredentials: true
       })
       

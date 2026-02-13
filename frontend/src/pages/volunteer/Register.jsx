@@ -9,14 +9,8 @@ import {
   Person, Email, Lock, Phone, LocationOn, 
   CheckCircle, VolunteerActivism, ArrowBack
 } from '@mui/icons-material'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
-
-const apiClient = axios.create({
-  baseURL: '/api',
-  withCredentials: true,
-  headers: { 'Content-Type': 'application/json' }
-})
 
 const VolunteerRegister = () => {
   const navigate = useNavigate()

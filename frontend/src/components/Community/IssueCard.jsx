@@ -27,7 +27,7 @@ import {
   LocationOn,
   MoreVert,
 } from '@mui/icons-material'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 
 const IssueCard = ({ issue, onOpenDetails, onRefresh, currentUserId }) => {
@@ -55,7 +55,7 @@ const IssueCard = ({ issue, onOpenDetails, onRefresh, currentUserId }) => {
     }
 
     try {
-      const response = await axios.post(`/api/reports/${issue._id}/like`, {}, {
+      const response = await apiClient.post(`/reports/${issue._id}/like`, {}, {
         withCredentials: true
       })
 
@@ -74,7 +74,7 @@ const IssueCard = ({ issue, onOpenDetails, onRefresh, currentUserId }) => {
   const handleShare = async (platform) => {
     try {
       // Track share
-      await axios.post(`/api/reports/${issue._id}/share`, {}, {
+      await apiClient.post(`/reports/${issue._id}/share`, {}, {
         withCredentials: true
       })
 

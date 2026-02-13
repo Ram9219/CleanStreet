@@ -1,5 +1,6 @@
 import React, { useCallback, useEffect, useState } from 'react'
 import { useAuth } from '../../contexts/AuthContext'
+import { buildApiUrl } from '../../utils/apiClient'
 import {
   AppBar,
   Toolbar,
@@ -101,7 +102,7 @@ const AdminLayout = ({ children }) => {
   const fetchNotifications = useCallback(async () => {
     if (!user) return
     try {
-      const response = await fetch('/api/notifications?limit=20', {
+      const response = await fetch(buildApiUrl('/notifications?limit=20'), {
         credentials: 'include'
       })
       const data = await response.json()
@@ -131,7 +132,7 @@ const AdminLayout = ({ children }) => {
 
   const markAsRead = async (id) => {
     try {
-      await fetch(`/api/notifications/${id}/read`, {
+      await fetch(buildApiUrl(`/notifications/${id}/read`), {
         method: 'PUT',
         credentials: 'include'
       })

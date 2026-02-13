@@ -16,7 +16,7 @@ import {
 } from '@mui/material'
 import { useAuth } from '../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { apiClient } from '../utils/apiClient'
 import toast from 'react-hot-toast'
 import PersonIcon from '@mui/icons-material/Person'
 import EmailIcon from '@mui/icons-material/Email'
@@ -90,8 +90,8 @@ const Profile = () => {
     setLoading(true)
 
     try {
-      const response = await axios.put(
-        '/api/auth/profile',
+      const response = await apiClient.put(
+        '/auth/profile',
         {
           name: formData.name,
           phone: formData.phone
@@ -138,7 +138,7 @@ const Profile = () => {
       const formDataUpload = new FormData()
       formDataUpload.append('image', file)
 
-      const response = await axios.post('/api/auth/upload-profile-picture', formDataUpload, {
+      const response = await apiClient.post('/auth/upload-profile-picture', formDataUpload, {
         withCredentials: true,
         headers: { 'Content-Type': 'multipart/form-data' }
       })

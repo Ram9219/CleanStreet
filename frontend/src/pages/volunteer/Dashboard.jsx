@@ -3,14 +3,8 @@ import { Container, Typography, Grid, Card, CardContent, Box, Button, Chip, Circ
 import { VolunteerActivism, Event, Assignment, EmojiEvents, CheckCircle } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
-import axios from 'axios'
+import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
-
-const apiClient = axios.create({
-  baseURL: '/api',
-  withCredentials: true,
-  headers: { 'Content-Type': 'application/json' }
-})
 
 const Dashboard = () => {
   const navigate = useNavigate()
