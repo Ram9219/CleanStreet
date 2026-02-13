@@ -39,12 +39,17 @@ const VerificationPending = () => {
   useEffect(() => {
     const checkStatus = async () => {
       try {
+        console.log('🔄 Checking volunteer verification status...')
+        console.log('Current user status:', user?.volunteer_status)
+        
         // For volunteers, use the dedicated endpoint to get latest status
         await refreshVolunteerStatus()
         // Also do a general refresh
         await refreshUser()
+        
+        console.log('✅ Status refreshed. New status:', user?.volunteer_status)
       } catch (error) {
-        console.error('Failed to refresh user status:', error)
+        console.error('❌ Failed to refresh user status:', error)
       }
     }
 

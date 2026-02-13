@@ -106,13 +106,18 @@ export const AuthProvider = ({ children }) => {
     try {
       // For volunteers, fetch profile data to get the latest status
       const response = await authClient.get('/volunteers/profile')
-      if (response.data.success && response.data.volunteer) {
-        // Update user with latest volunteer_status
-        setUser(prevUser => ({
-          ...prevUser,
-          volunteer_status: response.data.volunteer.volunteer_status || prevUser?.volunteer_status,
-          volunteer_tier: response.data.volunteer.volunteer_tier || prevUser?.volunteer_tier
-        }))
+      if (response.data.success) {
+        // Update user with latest volunteer_status from the volunteer object
+        const volunteerData = response.data.volunteer || response.data.user
+        if (volunteerData) {
+          setUser(prevUser => ({
+            ...prevUser,
+            volunteer_status: volunteerData.volunteer_status || prevUser?.volunteer_status,
+            volunteer_tier: volunteerData.volunteer_tier || prevUser?.volunteer_tier,
+            name: volunteerData.name || prevUser?.name,
+            email: volunteerData.email || prevUser?.email
+          }))
+        }
       }
       return { success: true }
     } catch (error) {
