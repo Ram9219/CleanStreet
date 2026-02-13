@@ -438,6 +438,7 @@ function App() {
                 </AdminLayout>
               </ProtectedRoute>
             } />
+            <Route path="*" element={<Navigate to="/" replace />} />
           </Routes>
         </AuthProvider>
       </Router>
