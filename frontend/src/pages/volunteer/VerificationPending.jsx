@@ -30,7 +30,7 @@ import { useNavigate } from 'react-router-dom'
 import { getScopedPath } from '../../utils/subdomain'
 
 const VerificationPending = () => {
-  const { user, refreshUser } = useAuth()
+  const { user, refreshUser, refreshVolunteerStatus } = useAuth()
   const navigate = useNavigate()
   const theme = useTheme()
   const [refreshKey, setRefreshKey] = useState(0)
@@ -39,6 +39,9 @@ const VerificationPending = () => {
   useEffect(() => {
     const checkStatus = async () => {
       try {
+        // For volunteers, use the dedicated endpoint to get latest status
+        await refreshVolunteerStatus()
+        // Also do a general refresh
         await refreshUser()
       } catch (error) {
         console.error('Failed to refresh user status:', error)

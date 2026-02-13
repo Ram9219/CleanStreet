@@ -102,6 +102,25 @@ export const AuthProvider = ({ children }) => {
     }
   }
 
+  const refreshVolunteerStatus = async () => {
+    try {
+      // For volunteers, fetch profile data to get the latest status
+      const response = await authClient.get('/volunteers/profile')
+      if (response.data.success && response.data.volunteer) {
+        // Update user with latest volunteer_status
+        setUser(prevUser => ({
+          ...prevUser,
+          volunteer_status: response.data.volunteer.volunteer_status || prevUser?.volunteer_status,
+          volunteer_tier: response.data.volunteer.volunteer_tier || prevUser?.volunteer_tier
+        }))
+      }
+      return { success: true }
+    } catch (error) {
+      console.log('Failed to refresh volunteer status:', error.message)
+      return { success: false, error: error.message }
+    }
+  }
+
   const verifyEmail = async (email, otp) => {
     try {
       const response = await authClient.post('/auth/verify-email', {
@@ -189,7 +208,8 @@ export const AuthProvider = ({ children }) => {
     forgotPassword,
     resetPassword,
     resendVerification,
-    refreshUser: checkAuthStatus
+    refreshUser: checkAuthStatus,
+    refreshVolunteerStatus
   }
 
   return (
