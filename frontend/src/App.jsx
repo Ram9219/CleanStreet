@@ -381,6 +381,7 @@ function App() {
             <Route path="/volunteer/*" element={<Navigate to="/volunteer/login" />} />
 
             {/* Admin Path Routes */}
+            <Route path="/admin" element={<Navigate to="/admin/login" />} />
             <Route path="/admin/login" element={<PublicLayout><AdminLogin /></PublicLayout>} />
             <Route path="/admin/home" element={
               <ProtectedRoute adminOnly>
