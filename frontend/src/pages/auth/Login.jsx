@@ -12,7 +12,7 @@ import VisibilityOff from '@mui/icons-material/VisibilityOff'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
-import { useNavigate, Link } from 'react-router-dom'
+import { useNavigate, useLocation, Link } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { keyframes } from '@emotion/react'
 
@@ -39,6 +39,7 @@ const Login = () => {
   const [showPassword, setShowPassword] = useState(false)
   const [error, setError] = useState('')
   const navigate = useNavigate()
+  const location = useLocation()
   const { login } = useAuth()
   const theme = useTheme()
 
@@ -54,13 +55,22 @@ const Login = () => {
   const onSubmit = async (data) => {
     setLoading(true)
     setError('')
-    
-    const result = await login(data.email, data.password)
-    if (!result.success) {
-      setError(result.error || 'Invalid email or password. Please try again.')
+
+    try {
+      const result = await login(data.email, data.password)
+      if (!result?.success) {
+        setError(result?.error || 'Invalid email or password. Please try again.')
+        return
+      }
+
+      const redirectTo = location.state?.from || '/dashboard'
+      navigate(redirectTo, { replace: true })
+    } catch (err) {
+      const message = err?.response?.data?.error || 'Invalid email or password. Please try again.'
+      setError(message)
+    } finally {
+      setLoading(false)
     }
-    
-    setLoading(false)
   }
 
   const handleGoogleLogin = () => {
