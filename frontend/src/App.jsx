@@ -1,7 +1,7 @@
-import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom'
+import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { ThemeProvider, createTheme } from '@mui/material'
 import { CssBaseline } from '@mui/material'
-import { useMemo, useState } from 'react'
+import { useMemo, useState, useEffect } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './contexts/AuthContext'
 import { getSubdomain } from './utils/subdomain'
@@ -35,6 +35,8 @@ import SetupWizard from './components/setup/SetupWizard'
 import ReportIssue from './pages/ReportIssue'
 import About from './pages/About'
 import Contact from './pages/Contact'
+import Terms from './pages/Terms'
+import Privacy from './pages/Privacy'
 import Settings from './pages/user/Settings'
 import Activity from './pages/user/Activity'
 import Analytics from './pages/user/Analytics'
@@ -77,12 +79,22 @@ function App() {
   const toggleColorMode = () => {
     setMode((prev) => (prev === 'light' ? 'dark' : 'light'))
   }
+
+  // Scroll to top on route change
+  const ScrollToTop = () => {
+    const location = useLocation()
+    useEffect(() => {
+      window.scrollTo(0, 0)
+    }, [location.pathname])
+    return null
+  }
   
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
       <Toaster position="top-right" />
       <Router>
+        <ScrollToTop />
         <AuthProvider>
           <SetupRedirect>
             <Routes>
@@ -235,6 +247,8 @@ function App() {
             <Route path="/verify-email" element={<PublicLayout><VerifyEmail /></PublicLayout>} />
             <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
             <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
+            <Route path="/terms" element={<PublicLayout><Terms /></PublicLayout>} />
+            <Route path="/privacy" element={<PublicLayout><Privacy /></PublicLayout>} />
             <Route path="/community" element={<PublicLayout><Community /></PublicLayout>} />
 
             {/* Protected User Routes */}

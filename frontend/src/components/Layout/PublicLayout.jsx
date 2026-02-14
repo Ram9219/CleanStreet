@@ -383,16 +383,14 @@ const Footer = memo(() => {
     <Box 
       component="footer" 
       sx={{ 
-        position: 'fixed',
-        bottom: 0,
-        left: 0,
-        right: 0,
+        position: 'relative',
         borderTop: '1px solid',
         borderColor: alpha(theme.palette.divider, 0.1),
-        py: 2,
+        py: { xs: 1.5, md: 2 },
+        px: { xs: 1, md: 2 },
         background: 'linear-gradient(135deg, rgba(255,255,255,0.98) 0%, rgba(248,249,255,0.98) 100%)',
         backdropFilter: 'blur(10px)',
-        zIndex: 1000,
+        mt: 'auto',
       }}
     >
       <Container maxWidth="lg">
@@ -613,8 +611,7 @@ const PublicLayout = ({ children }) => {
       minHeight: '100vh', 
       bgcolor: 'background.default',
       display: 'flex',
-      flexDirection: 'column',
-      pb: { xs: '130px', md: '60px' }
+      flexDirection: 'column'
     }}>
       <AppBar 
         position="sticky" 

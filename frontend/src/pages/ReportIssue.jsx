@@ -1090,7 +1090,7 @@ const ReportIssue = () => {
         {activeStep === 2 && (
           <Box>
             <Typography variant="h6" gutterBottom fontWeight="bold" sx={{ fontSize: { xs: '1rem', sm: '1.25rem' } }}>
-              Add Photos (Optional but Recommended)
+              Add or Upload Photos ( Mendotory )
             </Typography>
             <Typography variant="body2" color="text.secondary" paragraph sx={{ fontSize: { xs: '0.75rem', sm: '0.875rem' } }}>
               Photos help authorities understand the issue better and resolve it faster
