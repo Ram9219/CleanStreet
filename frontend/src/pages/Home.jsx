@@ -1119,6 +1119,7 @@ const CategoryCard = styled(Paper, {
   textAlign: 'center',
   transition: 'all 0.3s cubic-bezier(0.4, 0, 0.2, 1)',
   cursor: 'pointer',
+  width: '100%',
   height: '100%',
   transform: active ? 'translateY(-8px)' : 'none',
   boxShadow: active ? `0 20px 40px ${alpha(color, 0.25)}` : 'none',
@@ -2171,7 +2172,11 @@ const Home = () => {
           ? 'linear-gradient(180deg, #1a1a2e 0%, #16213e 100%)'
           : 'linear-gradient(180deg, #f8f9fa 0%, #e9ecef 100%)'
       }}>
-        <MuiContainer maxWidth="xl">
+        <MuiContainer
+          maxWidth={false}
+          disableGutters
+          sx={{ px: { xs: 2, sm: 3, md: 6, lg: 10 } }}
+        >
           <Box sx={{ textAlign: 'center', mb: 6 }}>
             <Typography 
               variant="h2" 
@@ -2196,9 +2201,9 @@ const Home = () => {
             </Typography>
           </Box>
           
-          <Grid container spacing={2}>
+          <Grid container spacing={2} justifyContent="center">
             {categories.map((category, index) => (
-              <Grid item xs={6} sm={4} md={2} key={index}>
+              <Grid item xs={6} sm={4} md={3} lg={2} key={index}>
                 <Zoom in timeout={500} style={{ transitionDelay: `${index * 100}ms` }}>
                   <CategoryCard
                     color={category.color}
