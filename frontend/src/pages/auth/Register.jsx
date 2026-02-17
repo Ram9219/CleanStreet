@@ -61,7 +61,10 @@ const registerSchema = yup.object({
     .oneOf([yup.ref('password'), null], 'Passwords must match')
     .required('Please confirm your password'),
   phone: yup.string()
-    .matches(/^[0-9]{10}$/, 'Phone number must be 10 digits')
+    .matches(/^[0-9]{10}$/, {
+      message: 'Phone number must be 10 digits',
+      excludeEmptyString: true
+    })
     .optional()
 })
 
@@ -133,7 +136,12 @@ const Register = () => {
     setSuccess('')
     
     try {
-      const result = await registerUser(data)
+      const payload = {
+        ...data,
+        ...(data.phone?.trim() ? { phone: data.phone.trim() } : {})
+      }
+
+      const result = await registerUser(payload)
       if (result.success) {
         setSuccess('✅ Registration successful! Redirecting to email verification...')
         // Redirect to verify email page

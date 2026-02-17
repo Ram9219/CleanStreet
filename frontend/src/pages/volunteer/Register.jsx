@@ -62,7 +62,7 @@ const VolunteerRegister = () => {
         email: formData.email,
         password: formData.password,
         name: formData.name,
-        phone: formData.phone,
+        ...(formData.phone?.trim() ? { phone: formData.phone.trim() } : {}),
         location: {
           city: formData.city,
           state: formData.state,
