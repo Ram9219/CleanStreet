@@ -62,8 +62,10 @@ export const AuthProvider = ({ children }) => {
 
   const adminLogin = async (email, password) => {
     try {
+      const normalizedEmail = (email || '').trim().toLowerCase()
+
       const response = await authClient.post('/admin/login', {
-        email,
+        email: normalizedEmail,
         password
       })
 

@@ -49,7 +49,7 @@ const AdminLogin = () => {
     setError('')
     
     try {
-      const result = await adminLogin(data.email, data.password)
+      const result = await adminLogin(data.email.trim().toLowerCase(), data.password)
       if (!result.success) {
         throw new Error(result.error || 'Login failed')
       }

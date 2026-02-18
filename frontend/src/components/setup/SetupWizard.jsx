@@ -123,14 +123,16 @@ const SetupWizard = () => {
       return
     }
 
+    const normalizedEmail = formData.admin.email.trim().toLowerCase()
+
     setLoading(true)
     setError('')
     
     try {
       const response = await apiClient.post('/setup/super-admin', {
-        email: formData.admin.email,
+        email: normalizedEmail,
         password: formData.admin.password,
-        name: formData.admin.name
+        name: formData.admin.name.trim()
       }, {
         headers: formData.admin.setupKey ? { 'x-master-key': formData.admin.setupKey } : {}
       })
