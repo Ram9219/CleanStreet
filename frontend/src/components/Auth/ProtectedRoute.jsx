@@ -49,27 +49,29 @@ const ProtectedRoute = ({
     return <Navigate to="/login" replace />
   }
 
-  // Force password change for admins if required
-  if (user?.requiresPasswordChange) {
-    const currentPath = window.location.pathname
-    const isChangePasswordPage = currentPath.includes('/change-password')
-    
-    console.log('🔒 ProtectedRoute - requiresPasswordChange detected:', user?.requiresPasswordChange)
-    console.log('📍 Current path:', currentPath)
-    console.log('🔄 Is change password page:', isChangePasswordPage)
-    
-    if (!isChangePasswordPage) {
-      const subdomain = getSubdomain()
-      const isAdminContext = subdomain === 'admin' || currentPath.startsWith('/admin')
-      
-      console.log('🚀 Redirecting to change password page...')
-      
-      if (isAdminContext) {
-        return <Navigate to={getScopedPath('admin', '/change-password')} replace />
-      }
-      // For other contexts that might need password change in future
-      return <Navigate to="/change-password" replace />
+  const currentPath = window.location.pathname || ''
+  const subdomain = getSubdomain()
+  const isAdminContext = subdomain === 'admin' || currentPath.startsWith('/admin')
+  const isChangePasswordPage = currentPath.includes('/change-password')
+  const isSuperAdmin = user?.isSuperAdmin === true || user?.role === 'super-admin'
+
+  if (isChangePasswordPage) {
+    if (isSuperAdmin) {
+      return <Navigate to={isAdminContext ? getScopedPath('admin', '/dashboard') : '/dashboard'} replace />
     }
+
+    if (!user?.requiresPasswordChange) {
+      return <Navigate to={isAdminContext ? getScopedPath('admin', '/dashboard') : '/dashboard'} replace />
+    }
+  }
+
+  // Force password change for admins if required
+  if (user?.requiresPasswordChange && isAdmin && !isSuperAdmin && !isChangePasswordPage) {
+    if (isAdminContext) {
+      return <Navigate to={getScopedPath('admin', '/change-password')} replace />
+    }
+
+    return <Navigate to="/change-password" replace />
   }
 
   if (adminOnly && !isAdmin) {

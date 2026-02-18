@@ -77,7 +77,9 @@ export const AuthProvider = ({ children }) => {
 
       // Redirect based on host (subdomain vs path)
       const isAdminSubdomain = typeof window !== 'undefined' && window.location.hostname.startsWith('admin.')
-      if (adminUser?.requiresPasswordChange) {
+      const isSuperAdmin = adminUser?.isSuperAdmin === true || adminUser?.role === 'super-admin'
+
+      if (adminUser?.requiresPasswordChange && !isSuperAdmin) {
         console.log('⚠️ Password change required - redirecting...')
         navigate(isAdminSubdomain ? '/change-password' : '/admin/change-password')
       } else {
