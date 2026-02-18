@@ -684,8 +684,6 @@ const ReportIssue = () => {
           }))
       }
 
-      console.log('Sending data:', reportData)
-
       const response = await apiClient.post('/reports/create', reportData, {
         withCredentials: true,
         headers: {

@@ -63,7 +63,7 @@ const AdminHome = () => {
       const res = await apiClient.get('/admin/volunteers/pending')
       setPendingVolunteersCount(res.data.count || 0)
     } catch (err) {
-      console.log('Could not fetch pending volunteers count')
+      console.error('Could not fetch pending volunteers count')
     }
   }
 

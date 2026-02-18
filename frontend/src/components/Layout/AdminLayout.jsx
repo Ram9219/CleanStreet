@@ -54,16 +54,6 @@ const AdminLayout = ({ children }) => {
   const [notifications, setNotifications] = useState([])
   const [unreadCount, setUnreadCount] = useState(0)
 
-  // Debug logging
-  React.useEffect(() => {
-    console.log('🔐 AdminLayout auth state:', {
-      user: user?.email,
-      isAdmin,
-      role: user?.role,
-      isSuperAdmin: user?.isSuperAdmin
-    })
-  }, [user, isAdmin])
-
   const handleDrawerToggle = () => {
     setMobileOpen(!mobileOpen)
   }

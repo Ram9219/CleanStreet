@@ -22,8 +22,6 @@ export const AuthProvider = ({ children }) => {
   const checkAuthStatus = async () => {
     try {
       const response = await authClient.get('/auth/me')
-      console.log('🔄 Auth Status Check - User:', response.data.user)
-      console.log('🔑 Auth Status - requiresPasswordChange:', response.data.user?.requiresPasswordChange)
       setUser(response.data.user)
     } catch (error) {
       setUser(null)
@@ -72,9 +70,6 @@ export const AuthProvider = ({ children }) => {
       const adminUser = response.data.user
       setUser(adminUser)
       
-      console.log('🔐 Admin Login - User object:', adminUser)
-      console.log('🔑 requiresPasswordChange flag:', adminUser?.requiresPasswordChange)
-      
       toast.success('Admin login successful!')
 
       // Redirect based on host (subdomain vs path)
@@ -82,7 +77,6 @@ export const AuthProvider = ({ children }) => {
       const isSuperAdmin = adminUser?.isSuperAdmin === true || adminUser?.role === 'super-admin'
 
       if (adminUser?.requiresPasswordChange && !isSuperAdmin) {
-        console.log('⚠️ Password change required - redirecting...')
         navigate(isAdminSubdomain ? '/change-password' : '/admin/change-password')
       } else {
         // Verify session is active by checking auth status
@@ -133,7 +127,7 @@ export const AuthProvider = ({ children }) => {
       }
       return { success: true }
     } catch (error) {
-      console.log('Failed to refresh volunteer status:', error.message)
+      console.error('Failed to refresh volunteer status')
       return { success: false, error: error.message }
     }
   }

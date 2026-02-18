@@ -38,7 +38,7 @@ const AdminLogin = () => {
         const response = await apiClient.get('/system/status')
         setSystemStatus(response.data.system)
       } catch (error) {
-        console.log('System status check failed')
+        console.error('System status check failed')
       }
     }
     checkSystemStatus()
