@@ -8,7 +8,6 @@ import {
   Card,
   CardContent,
   LinearProgress,
-  CircularProgress,
   alpha,
   Chip,
   Divider
@@ -29,6 +28,7 @@ import { motion } from 'framer-motion'
 import { useAuth } from '../../contexts/AuthContext'
 import { apiClient } from '../../utils/apiClient'
 import { styled } from '@mui/material/styles'
+import AppLoader from '../../components/Feedback/AppLoader'
 
 const StatCard = styled(Card)(({ theme, color = 'primary' }) => ({
   background: theme.palette.mode === 'dark'
@@ -139,9 +139,11 @@ const Analytics = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-        <CircularProgress size={60} />
-      </Box>
+      <AppLoader
+        message="Loading analytics"
+        submessage="Building your insights"
+        minHeight="80vh"
+      />
     )
   }
 

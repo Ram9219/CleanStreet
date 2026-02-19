@@ -35,7 +35,12 @@ const AdminLogin = () => {
   useEffect(() => {
     const checkSystemStatus = async () => {
       try {
-        const response = await apiClient.get('/system/status')
+        let response
+        try {
+          response = await apiClient.get('/system/status')
+        } catch (primaryError) {
+          response = await apiClient.get('/api/system/status')
+        }
         setSystemStatus(response.data.system)
       } catch (error) {
         console.error('System status check failed')

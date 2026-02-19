@@ -1,8 +1,8 @@
 import React from 'react'
 import { Navigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
-import { CircularProgress, Box } from '@mui/material'
 import { getScopedPath, isScopedPath, getSubdomain } from '../../utils/subdomain'
+import AppLoader from '../Feedback/AppLoader'
 
 const ProtectedRoute = ({ 
   children, 
@@ -14,16 +14,11 @@ const ProtectedRoute = ({
   
   if (loading) {
     return (
-      <Box
-        sx={{
-          display: 'flex',
-          justifyContent: 'center',
-          alignItems: 'center',
-          height: '100vh'
-        }}
-      >
-        <CircularProgress />
-      </Box>
+      <AppLoader
+        fullScreen
+        message="Loading"
+        submessage="Verifying your account and permissions"
+      />
     )
   }
 

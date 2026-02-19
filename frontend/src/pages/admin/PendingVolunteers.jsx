@@ -36,6 +36,7 @@ import {
 } from '@mui/icons-material'
 import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
+import AppLoader from '../../components/Feedback/AppLoader'
 
 const PendingVolunteers = () => {
   const [volunteers, setVolunteers] = useState([])
@@ -128,9 +129,11 @@ const PendingVolunteers = () => {
 
   if (loading) {
     return (
-      <Container sx={{ py: 4, display: 'flex', justifyContent: 'center' }}>
-        <CircularProgress />
-      </Container>
+      <AppLoader
+        message="Loading volunteers"
+        submessage="Fetching pending verification requests"
+        minHeight="40vh"
+      />
     )
   }
 

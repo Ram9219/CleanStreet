@@ -15,6 +15,7 @@ import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
+import AppLoader from '../../components/Feedback/AppLoader'
 
 dayjs.extend(relativeTime)
 
@@ -226,34 +227,11 @@ const MyEvents = () => {
 
   if (loading) {
     return (
-      <Container maxWidth="lg" sx={{ py: 4 }}>
-        <Skeleton variant="text" width={200} height={40} sx={{ mb: 2 }} />
-        <Skeleton variant="text" width={300} height={24} sx={{ mb: 4 }} />
-        
-        {/* Summary Skeletons */}
-        <Grid container spacing={2} sx={{ mb: 3 }}>
-          {[1, 2, 3, 4].map(i => (
-            <Grid item xs={12} sm={6} md={3} key={i}>
-              <Skeleton variant="rounded" height={80} />
-            </Grid>
-          ))}
-        </Grid>
-        
-        {/* Event Cards Skeletons */}
-        <Grid container spacing={3}>
-          {[1, 2, 3, 4].map(i => (
-            <Grid item xs={12} md={6} key={i}>
-              <Card elevation={0} sx={{ border: '1px solid #e0e0e0', borderRadius: 2, p: 2 }}>
-                <Skeleton variant="text" width="60%" height={32} sx={{ mb: 2 }} />
-                <Skeleton variant="text" width="100%" height={20} sx={{ mb: 1 }} />
-                <Skeleton variant="text" width="80%" height={20} sx={{ mb: 1 }} />
-                <Skeleton variant="text" width="90%" height={20} sx={{ mb: 1 }} />
-                <Skeleton variant="rectangular" width={120} height={36} sx={{ borderRadius: 1, mt: 2 }} />
-              </Card>
-            </Grid>
-          ))}
-        </Grid>
-      </Container>
+      <AppLoader
+        message="Loading your events"
+        submessage="Preparing registrations and attendance"
+        minHeight="60vh"
+      />
     )
   }
 

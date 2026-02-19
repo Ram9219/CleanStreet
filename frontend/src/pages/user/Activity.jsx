@@ -8,7 +8,6 @@ import {
   CardContent,
   Avatar,
   Chip,
-  CircularProgress,
   alpha,
   Stack,
 } from '@mui/material'
@@ -25,6 +24,7 @@ import { motion } from 'framer-motion'
 import { useAuth } from '../../contexts/AuthContext'
 import { apiClient } from '../../utils/apiClient'
 import { styled } from '@mui/material/styles'
+import AppLoader from '../../components/Feedback/AppLoader'
 
 const ActivityCard = styled(Card)(({ theme }) => ({
   background: theme.palette.mode === 'dark'
@@ -138,9 +138,11 @@ const Activity = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-        <CircularProgress size={60} />
-      </Box>
+      <AppLoader
+        message="Loading activity"
+        submessage="Fetching your recent updates"
+        minHeight="80vh"
+      />
     )
   }
 

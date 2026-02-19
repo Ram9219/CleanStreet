@@ -6,6 +6,7 @@ import { getScopedPath } from '../../utils/subdomain'
 import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 import dayjs from 'dayjs'
+import AppLoader from '../../components/Feedback/AppLoader'
 
 const Events = () => {
   const navigate = useNavigate()
@@ -48,9 +49,11 @@ const Events = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress />
-      </Box>
+      <AppLoader
+        message="Loading events"
+        submessage="Fetching upcoming volunteer events"
+        minHeight="50vh"
+      />
     )
   }
 

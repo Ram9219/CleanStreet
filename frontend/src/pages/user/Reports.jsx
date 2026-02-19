@@ -31,6 +31,7 @@ import { useNavigate } from 'react-router-dom'
 import { apiClient } from '../../utils/apiClient'
 import { useAuth } from '../../contexts/AuthContext'
 import toast from 'react-hot-toast'
+import AppLoader from '../../components/Feedback/AppLoader'
 
 const Reports = () => {
   const navigate = useNavigate()
@@ -120,9 +121,11 @@ const Reports = () => {
 
   if (loading) {
     return (
-      <Container maxWidth="lg" sx={{ py: 4, display: 'flex', justifyContent: 'center' }}>
-        <CircularProgress />
-      </Container>
+      <AppLoader
+        message="Loading reports"
+        submessage="Fetching your submitted issues"
+        minHeight="40vh"
+      />
     )
   }
 

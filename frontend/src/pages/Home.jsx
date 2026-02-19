@@ -28,7 +28,7 @@ import PhotoCameraIcon from '@mui/icons-material/PhotoCamera';
 import GpsFixedIcon from '@mui/icons-material/GpsFixed';
 
 // Assets
-import heroVideo from '../assets/hero-background.mp4';
+import heroVideo from '../assets/hero-background.optimized.mp4';
 import { Helmet } from 'react-helmet';
 // ==================== STYLED COMPONENTS ====================
 

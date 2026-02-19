@@ -1,58 +1,59 @@
 import { BrowserRouter as Router, Routes, Route, Navigate, useLocation } from 'react-router-dom'
 import { ThemeProvider, createTheme } from '@mui/material'
 import { CssBaseline } from '@mui/material'
-import { useMemo, useState, useEffect } from 'react'
+import { useMemo, useState, useEffect, lazy, Suspense } from 'react'
 import { Toaster } from 'react-hot-toast'
 import { AuthProvider } from './contexts/AuthContext'
 import { getSubdomain } from './utils/subdomain'
+import AppLoader from './components/Feedback/AppLoader'
 
 // Layout
-import MainLayout from './components/Layout/MainLayout'
-import PublicLayout from './components/Layout/PublicLayout'
-import AdminLayout from './components/Layout/AdminLayout'
+const MainLayout = lazy(() => import('./components/Layout/MainLayout'))
+const PublicLayout = lazy(() => import('./components/Layout/PublicLayout'))
+const AdminLayout = lazy(() => import('./components/Layout/AdminLayout'))
 
 // Pages
-import Home from './pages/Home'
-import Login from './pages/auth/Login'
-import Register from './pages/auth/Register'
-import ForgotPassword from './pages/auth/ForgotPassword'
-import VerifyEmail from './pages/auth/VerifyEmail'
-import Profile from './pages/Profile'
-import Dashboard from './pages/user/Dashboard'
-import Reports from './pages/user/Reports'
-import Map from './pages/user/Map'
-import History from './pages/user/History'
-import AdminHome from './pages/admin/Home'
-import AdminDashboard from './pages/admin/Dashboard'
-import AdminUsers from './pages/admin/Users'
-import AdminVolunteers from './pages/admin/Volunteers'
-import AdminReports from './pages/admin/Reports'
-import AdminSettings from './pages/admin/Settings'
-import AdminPendingVolunteers from './pages/admin/PendingVolunteers'
-import AdminLogin from './pages/admin/Login'
-import ChangePassword from './pages/admin/ChangePassword'
-import SetupWizard from './components/setup/SetupWizard'
-import ReportIssue from './pages/ReportIssue'
-import About from './pages/About'
-import Contact from './pages/Contact'
-import Terms from './pages/Terms'
-import Privacy from './pages/Privacy'
-import Settings from './pages/user/Settings'
-import Activity from './pages/user/Activity'
-import Analytics from './pages/user/Analytics'
-import Community from './pages/user/Community'
-import VolunteerLogin from './pages/volunteer/Login'
-import VolunteerDashboard from './pages/volunteer/Dashboard'
-import VolunteerHome from './pages/volunteer/Home'
-import VolunteerProfile from './pages/volunteer/Profile'
-import VolunteerReports from './pages/volunteer/Reports'
-import VolunteerRegister from './pages/volunteer/Register'
-import VolunteerForgotPassword from './pages/volunteer/ForgotPassword'
-import VolunteerVerifyEmail from './pages/volunteer/VerifyEmail'
-import VolunteerVerificationPending from './pages/volunteer/VerificationPending'
-import VolunteerEvents from './pages/volunteer/Events'
-import MyEvents from './pages/volunteer/MyEvents'
-import CreateEvent from './pages/volunteer/CreateEvent'
+const Home = lazy(() => import('./pages/Home'))
+const Login = lazy(() => import('./pages/auth/Login'))
+const Register = lazy(() => import('./pages/auth/Register'))
+const ForgotPassword = lazy(() => import('./pages/auth/ForgotPassword'))
+const VerifyEmail = lazy(() => import('./pages/auth/VerifyEmail'))
+const Profile = lazy(() => import('./pages/Profile'))
+const Dashboard = lazy(() => import('./pages/user/Dashboard'))
+const Reports = lazy(() => import('./pages/user/Reports'))
+const Map = lazy(() => import('./pages/user/Map'))
+const History = lazy(() => import('./pages/user/History'))
+const AdminHome = lazy(() => import('./pages/admin/Home'))
+const AdminDashboard = lazy(() => import('./pages/admin/Dashboard'))
+const AdminUsers = lazy(() => import('./pages/admin/Users'))
+const AdminVolunteers = lazy(() => import('./pages/admin/Volunteers'))
+const AdminReports = lazy(() => import('./pages/admin/Reports'))
+const AdminSettings = lazy(() => import('./pages/admin/Settings'))
+const AdminPendingVolunteers = lazy(() => import('./pages/admin/PendingVolunteers'))
+const AdminLogin = lazy(() => import('./pages/admin/Login'))
+const ChangePassword = lazy(() => import('./pages/admin/ChangePassword'))
+const SetupWizard = lazy(() => import('./components/setup/SetupWizard'))
+const ReportIssue = lazy(() => import('./pages/ReportIssue'))
+const About = lazy(() => import('./pages/About'))
+const Contact = lazy(() => import('./pages/Contact'))
+const Terms = lazy(() => import('./pages/Terms'))
+const Privacy = lazy(() => import('./pages/Privacy'))
+const Settings = lazy(() => import('./pages/user/Settings'))
+const Activity = lazy(() => import('./pages/user/Activity'))
+const Analytics = lazy(() => import('./pages/user/Analytics'))
+const Community = lazy(() => import('./pages/user/Community'))
+const VolunteerLogin = lazy(() => import('./pages/volunteer/Login'))
+const VolunteerDashboard = lazy(() => import('./pages/volunteer/Dashboard'))
+const VolunteerHome = lazy(() => import('./pages/volunteer/Home'))
+const VolunteerProfile = lazy(() => import('./pages/volunteer/Profile'))
+const VolunteerReports = lazy(() => import('./pages/volunteer/Reports'))
+const VolunteerRegister = lazy(() => import('./pages/volunteer/Register'))
+const VolunteerForgotPassword = lazy(() => import('./pages/volunteer/ForgotPassword'))
+const VolunteerVerifyEmail = lazy(() => import('./pages/volunteer/VerifyEmail'))
+const VolunteerVerificationPending = lazy(() => import('./pages/volunteer/VerificationPending'))
+const VolunteerEvents = lazy(() => import('./pages/volunteer/Events'))
+const MyEvents = lazy(() => import('./pages/volunteer/MyEvents'))
+const CreateEvent = lazy(() => import('./pages/volunteer/CreateEvent'))
 
 // Components
 import ProtectedRoute from './components/Auth/ProtectedRoute'
@@ -97,6 +98,15 @@ function App() {
         <ScrollToTop />
         <AuthProvider>
           <SetupRedirect>
+            <Suspense
+              fallback={
+                <AppLoader
+                  fullScreen
+                  message="Loading page"
+                  submessage="Preparing content"
+                />
+              }
+            >
             <Routes>
               {/* Volunteer Subdomain Routes */}
               {isVolunteerSubdomain && (
@@ -467,7 +477,8 @@ function App() {
               </ProtectedRoute>
             } />
             <Route path="*" element={<Navigate to="/" replace />} />
-          </Routes>
+            </Routes>
+            </Suspense>
           </SetupRedirect>
         </AuthProvider>
       </Router>

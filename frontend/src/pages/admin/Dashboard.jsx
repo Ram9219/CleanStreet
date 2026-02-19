@@ -117,6 +117,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { useNavigate } from 'react-router-dom'
 import { getScopedPath } from '../../utils/subdomain'
 import { motion, AnimatePresence } from 'framer-motion'
+import AppLoader from '../../components/Feedback/AppLoader'
 
 const AdminDashboard = () => {
   const theme = useTheme()
@@ -541,20 +542,11 @@ const AdminDashboard = () => {
 
   if (loading && !users.length) {
     return (
-      <Box sx={{ 
-        display: 'flex', 
-        justifyContent: 'center', 
-        alignItems: 'center', 
-        height: '100vh',
-        background: `linear-gradient(135deg, ${theme.palette.primary.light}20 0%, ${theme.palette.primary.dark}10 100%)`
-      }}>
-        <Stack alignItems="center" spacing={3}>
-          <CircularProgress size={80} thickness={4} />
-          <Typography variant="h6" color="text.secondary">
-            Loading Dashboard...
-          </Typography>
-        </Stack>
-      </Box>
+      <AppLoader
+        fullScreen
+        message="Loading admin dashboard"
+        submessage="Syncing users and reports"
+      />
     )
   }
 

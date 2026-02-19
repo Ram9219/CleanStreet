@@ -34,6 +34,7 @@ import { apiClient } from '../../utils/apiClient'
 import { useAuth } from '../../contexts/AuthContext'
 import CommentSection from '../../components/Community/CommentSection'
 import IssueCard from '../../components/Community/IssueCard'
+import AppLoader from '../../components/Feedback/AppLoader'
 
 const Community = () => {
   const { user, loading: authLoading } = useAuth()
@@ -133,8 +134,26 @@ const Community = () => {
     fetchIssues()
   }
 
+  const getDesktopGridSize = (count) => {
+    if (count <= 1) return 12
+    if (count === 2) return 6
+    if (count === 4) return 6
+    if (count === 3) return 4
+    if (count > 4 && count % 4 === 1) return 4
+    return 3
+  }
+
+  const getMediumGridSize = (count) => {
+    if (count <= 1) return 12
+    if (count === 2 || count === 4) return 6
+    return 4
+  }
+
+  const desktopGridSize = getDesktopGridSize(issues.length)
+  const mediumGridSize = getMediumGridSize(issues.length)
+
   return (
-    <Container maxWidth="md" sx={{ py: 4 }}>
+    <Container maxWidth="xl" sx={{ py: 4 }}>
       {/* Login Warning */}
       {!authLoading && !user && (
         <Alert severity="warning" sx={{ mb: 3 }}>
@@ -153,35 +172,28 @@ const Community = () => {
 
       {/* Loading State */}
       {(loading || authLoading) && (
-        <Box sx={{ display: 'flex', justifyContent: 'center', py: 6 }}>
-          <CircularProgress />
-          <Typography variant="body2" sx={{ ml: 2, alignSelf: 'center' }}>
-            {authLoading ? 'Loading user...' : 'Loading issues...'}
-          </Typography>
-        </Box>
+        <AppLoader
+          message={authLoading ? 'Loading user' : 'Loading community feed'}
+          submessage={authLoading ? 'Almost ready...' : 'Fetching latest issues'}
+          minHeight="40vh"
+        />
       )}
 
       {/* Issues Feed */}
       {!loading && !authLoading && issues.length > 0 && (
         <>
-          <Stack spacing={4} sx={{ mb: 4, alignItems: 'center' }}>
+          <Grid container spacing={3} sx={{ mb: 4 }} justifyContent="center">
             {issues.map((issue) => (
-              <Box
-                key={issue._id}
-                sx={{
-                  width: '100%',
-                  maxWidth: '600px',
-                }}
-              >
+              <Grid item xs={12} sm={6} md={mediumGridSize} lg={desktopGridSize} key={issue._id}>
                 <IssueCard
                   issue={issue}
                   onOpenDetails={() => handleOpenDetails(issue)}
                   onRefresh={handleRefreshIssues}
                   currentUserId={user?._id || null}
                 />
-              </Box>
+              </Grid>
             ))}
-          </Stack>
+          </Grid>
 
           {/* Pagination */}
           <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>

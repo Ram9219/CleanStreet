@@ -6,6 +6,7 @@ import { getScopedPath } from '../../utils/subdomain'
 import { useAuth } from '../../contexts/AuthContext'
 import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
+import AppLoader from '../../components/Feedback/AppLoader'
 
 const Dashboard = () => {
   const navigate = useNavigate()
@@ -59,9 +60,11 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress />
-      </Box>
+      <AppLoader
+        message="Loading volunteer dashboard"
+        submessage="Getting your contribution summary"
+        minHeight="50vh"
+      />
     )
   }
 

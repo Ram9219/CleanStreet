@@ -7,10 +7,10 @@ import {
   Card,
   CardContent,
   Chip,
-  CircularProgress,
   Alert,
 } from '@mui/material'
 import { apiClient } from '../../utils/apiClient'
+import AppLoader from '../../components/Feedback/AppLoader'
 
 const Issues = () => {
   const [issues, setIssues] = useState([])
@@ -62,9 +62,11 @@ const Issues = () => {
 
   if (loading) {
     return (
-      <Container maxWidth="lg" sx={{ py: 4, display: 'flex', justifyContent: 'center' }}>
-        <CircularProgress />
-      </Container>
+      <AppLoader
+        message="Loading issues"
+        submessage="Getting city-wide reports"
+        minHeight="40vh"
+      />
     )
   }
 

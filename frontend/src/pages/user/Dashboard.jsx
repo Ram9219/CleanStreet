@@ -53,6 +53,7 @@ import { motion } from 'framer-motion'
 import { useNavigate } from 'react-router-dom'
 import { styled } from '@mui/material/styles'
 import { apiClient } from '../../utils/apiClient'
+import AppLoader from '../../components/Feedback/AppLoader'
 
 // Styled Components
 const StyledCard = styled(Card)(({ theme }) => ({
@@ -254,9 +255,11 @@ const Dashboard = () => {
 
   if (loading) {
     return (
-      <Box sx={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '80vh' }}>
-        <CircularProgress size={60} />
-      </Box>
+      <AppLoader
+        message="Loading dashboard"
+        submessage="Getting your latest stats"
+        minHeight="80vh"
+      />
     )
   }
 

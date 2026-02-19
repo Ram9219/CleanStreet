@@ -72,9 +72,28 @@ const SetupWizard = () => {
     checkSetupStatus()
   }, [])
 
+  const requestWithApiFallback = async (method, path, payload = null, config = {}) => {
+    const fallbackPath = path.startsWith('/api/') ? path : `/api${path}`
+    const attempts = [path, fallbackPath]
+    let lastError
+
+    for (const attemptPath of attempts) {
+      try {
+        if (method === 'get') {
+          return await apiClient.get(attemptPath, config)
+        }
+        return await apiClient[method](attemptPath, payload, config)
+      } catch (err) {
+        lastError = err
+      }
+    }
+
+    throw lastError
+  }
+
   const checkSetupStatus = async () => {
     try {
-      const response = await apiClient.get('/system/status')
+      const response = await requestWithApiFallback('get', '/system/status')
       setSetupStatus(response.data)
       
       if (!response.data.system?.setupRequired) {
@@ -84,7 +103,8 @@ const SetupWizard = () => {
         }, 2000)
       }
     } catch (err) {
-      setError('Cannot connect to setup API. Make sure backend is running.')
+      const apiTarget = apiClient.defaults.baseURL || 'same-origin (/api proxy)'
+      setError(`Cannot reach setup API at ${apiTarget}. This is an API connection issue, not a MongoDB cluster issue. Check backend URL/proxy and CORS.`)
     }
   }
 
@@ -103,7 +123,7 @@ const SetupWizard = () => {
     setError('')
     
     try {
-      const response = await apiClient.post('/setup/test-database', {
+      await requestWithApiFallback('post', '/setup/test-database', {
         connectionString: formData.database.connectionString
       })
       
@@ -129,7 +149,7 @@ const SetupWizard = () => {
     setError('')
     
     try {
-      const response = await apiClient.post('/setup/super-admin', {
+      await requestWithApiFallback('post', '/setup/super-admin', {
         email: normalizedEmail,
         password: formData.admin.password,
         name: formData.admin.name.trim()
@@ -150,7 +170,7 @@ const SetupWizard = () => {
     setLoading(true)
     
     try {
-      await apiClient.post('/setup/configure', {
+      await requestWithApiFallback('post', '/setup/configure', {
         config: formData.system
       })
       
@@ -250,7 +270,7 @@ const SetupWizard = () => {
               onChange={(e) => handleInputChange('database', 'connectionString', e.target.value)}
               margin="normal"
               disabled={loading}
-              helperText="Example: mongodb://localhost:27017/clean_street"
+              helperText="Examples: mongodb://localhost:27017/clean_street or mongodb+srv://<user>:<pass>@cluster.mongodb.net/clean_street"
             />
             
             <Box sx={{ mt: 2 }}>
@@ -459,7 +479,7 @@ const SetupWizard = () => {
     }
   }
 
-  if (setupStatus && !setupStatus.setupRequired) {
+  if (setupStatus && !setupStatus.system?.setupRequired) {
     return (
       <Container maxWidth="md" sx={{ mt: 8 }}>
         <Paper elevation={3}>

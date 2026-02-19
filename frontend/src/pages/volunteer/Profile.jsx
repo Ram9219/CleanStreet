@@ -5,6 +5,7 @@ import { useAuth } from '../../contexts/AuthContext'
 import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
 import PhotoCamera from '@mui/icons-material/PhotoCamera'
+import AppLoader from '../../components/Feedback/AppLoader'
 
 const Profile = () => {
   const { user, refreshUser } = useAuth()
@@ -37,9 +38,11 @@ const Profile = () => {
 
   if (loading) {
     return (
-      <Box display="flex" justifyContent="center" alignItems="center" minHeight="400px">
-        <CircularProgress />
-      </Box>
+      <AppLoader
+        message="Loading profile"
+        submessage="Preparing volunteer details"
+        minHeight="50vh"
+      />
     )
   }
 
