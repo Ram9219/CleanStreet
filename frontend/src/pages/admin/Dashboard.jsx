@@ -53,7 +53,8 @@ import {
   FormControl,
   OutlinedInput,
   Checkbox,
-  useMediaQuery
+  useMediaQuery,
+  TablePagination
 } from '@mui/material'
 import {
   Add,
@@ -149,6 +150,8 @@ const AdminDashboard = () => {
   const [roleFilter, setRoleFilter] = useState('all')
   const [activeTab, setActiveTab] = useState(0)
   const [sortConfig, setSortConfig] = useState({ key: 'createdAt', direction: 'desc' })
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(14)
   
   // Dialog states
   const [openDialog, setOpenDialog] = useState(false)
@@ -300,6 +303,24 @@ const AdminDashboard = () => {
     
     setFilteredUsers(filtered)
   }
+
+  const paginatedUsers = useMemo(() => {
+    const startIndex = page * rowsPerPage
+    return filteredUsers.slice(startIndex, startIndex + rowsPerPage)
+  }, [filteredUsers, page, rowsPerPage])
+
+  const handleChangePage = (_event, newPage) => {
+    setPage(newPage)
+  }
+
+  const handleChangeRowsPerPage = (event) => {
+    setRowsPerPage(parseInt(event.target.value, 10))
+    setPage(0)
+  }
+
+  useEffect(() => {
+    setPage(0)
+  }, [searchTerm, statusFilter, roleFilter])
 
   const handleSort = (key) => {
     setSortConfig(prev => ({
@@ -858,7 +879,7 @@ const AdminDashboard = () => {
                     </TableRow>
                   </TableHead>
                   <TableBody>
-                    {filteredUsers.map((user) => (
+                    {paginatedUsers.map((user) => (
                       <TableRow 
                         key={user._id}
                         hover
@@ -981,6 +1002,16 @@ const AdminDashboard = () => {
                     </Typography>
                   </Box>
                 )}
+
+                <TablePagination
+                  component="div"
+                  count={filteredUsers.length}
+                  page={page}
+                  onPageChange={handleChangePage}
+                  rowsPerPage={rowsPerPage}
+                  onRowsPerPageChange={handleChangeRowsPerPage}
+                  rowsPerPageOptions={[14, 25, 50]}
+                />
               </TableContainer>
             )}
           </Paper>

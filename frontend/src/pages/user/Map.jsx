@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from 'react'
 import { Container, Typography, Box, Paper, Chip, Stack, Button, Divider, alpha } from '@mui/material'
-import { MapContainer, TileLayer, Marker, Popup, useMap } from 'react-leaflet'
+import { MapContainer, TileLayer, Marker, Popup, useMap, Circle } from 'react-leaflet'
 import MarkerClusterGroup from 'react-leaflet-cluster'
 import L from 'leaflet'
 import { apiClient } from '../../utils/apiClient'
@@ -59,7 +59,7 @@ const createUserIcon = () => L.divIcon({
   popupAnchor: [0, -12]
 })
 
-const nearbyRadiusKm = 2
+const defaultNearbyRadiusKm = 2
 
 const toRadians = (deg) => (deg * Math.PI) / 180
 
@@ -146,6 +146,17 @@ function EasyPrintControl() {
   return null
 }
 
+function FocusIssueControl({ targetIssue }) {
+  const map = useMap()
+
+  useEffect(() => {
+    if (!targetIssue) return
+    map.flyTo([targetIssue.lat, targetIssue.lng], 16, { duration: 0.8 })
+  }, [map, targetIssue])
+
+  return null
+}
+
 const Map = () => {
   const [issues, setIssues] = useState([])
   const [filteredIssues, setFilteredIssues] = useState([])
@@ -153,6 +164,9 @@ const Map = () => {
   const [routeTo, setRouteTo] = useState(null)
   const [userLocation, setUserLocation] = useState(null)
   const [shapeFilter, setShapeFilter] = useState(null)
+  const [nearbyOnly, setNearbyOnly] = useState(true)
+  const [nearbyRadiusKm, setNearbyRadiusKm] = useState(defaultNearbyRadiusKm)
+  const [focusedIssue, setFocusedIssue] = useState(null)
 
   const mapboxToken = import.meta.env.VITE_MAPBOX_TOKEN
 
@@ -195,11 +209,22 @@ const Map = () => {
       const shapeGeoJSON = shapeFilter.toGeoJSON()
       filtered = filtered.filter(i => booleanPointInPolygon([i.lng, i.lat], shapeGeoJSON))
     }
-    if (userLocation) {
+    if (userLocation && nearbyOnly) {
       filtered = filtered.filter(i => distanceKm(userLocation, { lat: i.lat, lng: i.lng }) <= nearbyRadiusKm)
     }
     setFilteredIssues(filtered)
-  }, [issues, selectedCategories, shapeFilter, userLocation])
+  }, [issues, selectedCategories, shapeFilter, userLocation, nearbyOnly, nearbyRadiusKm])
+
+  const nearbyIssues = useMemo(() => {
+    if (!userLocation) return []
+    return issues
+      .map((issue) => ({
+        ...issue,
+        distance: distanceKm(userLocation, { lat: issue.lat, lng: issue.lng })
+      }))
+      .filter((issue) => issue.distance <= nearbyRadiusKm)
+      .sort((a, b) => a.distance - b.distance)
+  }, [issues, userLocation, nearbyRadiusKm])
 
   const allCategories = useMemo(() => {
     const set = new Set(issues.map(i => i.category).filter(Boolean))
@@ -226,8 +251,34 @@ const Map = () => {
         </Typography>
         {userLocation && (
           <Typography variant="body2" color="text.secondary" sx={{ mb: 1 }}>
-            Showing issues within {nearbyRadiusKm} km of your location.
+            {nearbyOnly
+              ? `Showing issues within ${nearbyRadiusKm} km of your location.`
+              : `Showing all issues. ${nearbyIssues.length} are within ${nearbyRadiusKm} km of your location.`}
           </Typography>
+        )}
+        {userLocation && (
+          <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', mb: 2 }}>
+            <Chip
+              label={nearbyOnly ? 'Nearby Only: ON' : 'Nearby Only: OFF'}
+              color={nearbyOnly ? 'primary' : 'default'}
+              onClick={() => setNearbyOnly((prev) => !prev)}
+              variant={nearbyOnly ? 'filled' : 'outlined'}
+            />
+            {[1, 2, 5].map((radius) => (
+              <Chip
+                key={radius}
+                label={`${radius} km`}
+                onClick={() => setNearbyRadiusKm(radius)}
+                color={nearbyRadiusKm === radius ? 'primary' : 'default'}
+                variant={nearbyRadiusKm === radius ? 'filled' : 'outlined'}
+              />
+            ))}
+            <Chip
+              label="Focus Me"
+              onClick={() => setFocusedIssue(userLocation)}
+              variant="outlined"
+            />
+          </Stack>
         )}
         <Stack direction="row" spacing={1} sx={{ flexWrap: 'wrap', mb: 2 }}>
           {allCategories.map(cat => (
@@ -249,7 +300,14 @@ const Map = () => {
         </Stack>
 
         <Box sx={{ mt: 2, height: '70vh', borderRadius: 2, overflow: 'hidden' }}>
-          <MapContainer center={[defaultCenter.lat, defaultCenter.lng]} zoom={12} style={{ height: '100%', width: '100%' }}>
+          <MapContainer
+            center={[defaultCenter.lat, defaultCenter.lng]}
+            zoom={userLocation ? 14 : 12}
+            minZoom={4}
+            maxZoom={19}
+            scrollWheelZoom
+            style={{ height: '100%', width: '100%' }}
+          >
             {mapboxToken ? (
               <TileLayer
                 url={`https://api.mapbox.com/styles/v1/mapbox/streets-v11/tiles/{z}/{x}/{y}?access_token=${mapboxToken}`}
@@ -263,11 +321,24 @@ const Map = () => {
             {/* Controls */}
             <EasyPrintControl />
             <DrawControl onShapeCreated={layer => setShapeFilter(layer)} />
+            <FocusIssueControl targetIssue={focusedIssue} />
 
             {userLocation && (
-              <Marker position={[userLocation.lat, userLocation.lng]} icon={createUserIcon()}>
-                <Popup>You're here</Popup>
-              </Marker>
+              <>
+                <Circle
+                  center={[userLocation.lat, userLocation.lng]}
+                  radius={nearbyRadiusKm * 1000}
+                  pathOptions={{
+                    color: '#111827',
+                    fillColor: '#111827',
+                    fillOpacity: 0.08,
+                    weight: 1
+                  }}
+                />
+                <Marker position={[userLocation.lat, userLocation.lng]} icon={createUserIcon()}>
+                  <Popup>You are here</Popup>
+                </Marker>
+              </>
             )}
 
             <MarkerClusterGroup chunkedLoading>
@@ -276,11 +347,19 @@ const Map = () => {
                   <Popup>
                     <Typography variant="subtitle1" fontWeight={700}>{issue.title}</Typography>
                     <Typography variant="body2" color="text.secondary">{issue.address}</Typography>
+                    {userLocation && (
+                      <Typography variant="caption" color="text.secondary" sx={{ display: 'block', mt: 0.5 }}>
+                        {distanceKm(userLocation, { lat: issue.lat, lng: issue.lng }).toFixed(2)} km away
+                      </Typography>
+                    )}
                     <Stack direction="row" spacing={1} sx={{ mt: 1 }}>
                       <Chip label={issue.category} size="small" sx={{ textTransform: 'capitalize' }} />
                       <Chip label={issue.status} size="small" color={issue.status === 'resolved' ? 'success' : issue.status === 'pending' ? 'warning' : 'primary'} sx={{ textTransform: 'capitalize' }} />
                     </Stack>
                     <Stack direction="row" spacing={1} sx={{ mt: 2 }}>
+                      <Button size="small" variant="text" onClick={() => setFocusedIssue(issue)}>
+                        Zoom Here
+                      </Button>
                       <Button size="small" variant="contained" onClick={() => setRouteTo({ lat: issue.lat, lng: issue.lng })} disabled={!userLocation}>
                         Plan Route
                       </Button>
@@ -298,6 +377,46 @@ const Map = () => {
             )}
           </MapContainer>
         </Box>
+        {userLocation && (
+          <Paper
+            variant="outlined"
+            sx={{ mt: 2, p: 2, borderRadius: 2, bgcolor: (theme) => alpha(theme.palette.primary.main, 0.03) }}
+          >
+            <Typography variant="subtitle2" fontWeight={700} sx={{ mb: 1 }}>
+              Nearby Issues ({nearbyIssues.length})
+            </Typography>
+            {nearbyIssues.length === 0 ? (
+              <Typography variant="body2" color="text.secondary">
+                No nearby issues found in {nearbyRadiusKm} km. Try increasing the radius.
+              </Typography>
+            ) : (
+              <Stack spacing={1}>
+                {nearbyIssues.slice(0, 5).map((issue) => (
+                  <Stack
+                    key={issue.id}
+                    direction={{ xs: 'column', sm: 'row' }}
+                    spacing={1}
+                    alignItems={{ xs: 'flex-start', sm: 'center' }}
+                    justifyContent="space-between"
+                    sx={{ p: 1.2, borderRadius: 1, bgcolor: 'background.paper' }}
+                  >
+                    <Box sx={{ minWidth: 0 }}>
+                      <Typography variant="body2" fontWeight={600} noWrap>
+                        {issue.title}
+                      </Typography>
+                      <Typography variant="caption" color="text.secondary">
+                        {issue.distance.toFixed(2)} km • {issue.category}
+                      </Typography>
+                    </Box>
+                    <Button size="small" variant="outlined" onClick={() => setFocusedIssue(issue)}>
+                      Show on Map
+                    </Button>
+                  </Stack>
+                ))}
+              </Stack>
+            )}
+          </Paper>
+        )}
         <Divider sx={{ my: 2 }} />
         <Stack direction={{ xs: 'column', sm: 'row' }} spacing={1}>
           <Button variant="outlined" onClick={() => setShapeFilter(null)}>Clear Area Filter</Button>

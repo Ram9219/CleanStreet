@@ -31,6 +31,7 @@ import {
   ListItem,
   ListItemText,
   Collapse
+  ,TablePagination
 } from '@mui/material'
 import { 
   Refresh, 
@@ -44,7 +45,9 @@ import {
   LocationOn,
   CalendarToday,
   Report,
-  CheckCircle
+  CheckCircle,
+  Block,
+  LockOpen
 } from '@mui/icons-material'
 import { apiClient } from '../../utils/apiClient'
 import toast from 'react-hot-toast'
@@ -61,6 +64,29 @@ const AdminUsers = () => {
   const [searchQuery, setSearchQuery] = useState('')
   const [tabValue, setTabValue] = useState(0)
   const [expandedRow, setExpandedRow] = useState(null)
+  const [page, setPage] = useState(0)
+  const [rowsPerPage, setRowsPerPage] = useState(14)
+  const [statusUpdatingId, setStatusUpdatingId] = useState(null)
+
+  const getNormalizedRole = (account) => {
+    if (account?.isSuperAdmin) return 'super-admin'
+    return String(account?.role || 'user').toLowerCase()
+  }
+
+  const isCitizenRole = (account) => {
+    const role = getNormalizedRole(account)
+    return role === 'user' || role === 'citizen'
+  }
+
+  const isVolunteerRole = (account) => {
+    const role = getNormalizedRole(account)
+    return role === 'volunteer' || role === 'volenteer'
+  }
+
+  const isAdminRole = (account) => {
+    const role = getNormalizedRole(account)
+    return role === 'admin' || role === 'super-admin'
+  }
 
   const fetchUsers = async () => {
     setLoading(true)
@@ -89,6 +115,38 @@ const AdminUsers = () => {
     }
   }
 
+  const toggleUserStatus = async (user) => {
+    const isBlockableRole = isCitizenRole(user) || isVolunteerRole(user)
+    if (!isBlockableRole) {
+      toast.error('Only user and volunteer accounts can be blocked')
+      return
+    }
+
+    const nextStatus = !user.isActive
+    const actionText = nextStatus ? 'unblock' : 'block'
+    const confirmed = window.confirm(`Are you sure you want to ${actionText} this account?`)
+    if (!confirmed) return
+
+    setStatusUpdatingId(user._id)
+    try {
+      await apiClient.put(`/admin/users/${user._id}/status`, { isActive: nextStatus })
+
+      setUsers(prev => prev.map((u) => (
+        u._id === user._id ? { ...u, isActive: nextStatus } : u
+      )))
+
+      if (selectedUser?._id === user._id) {
+        setSelectedUser(prev => prev ? { ...prev, isActive: nextStatus } : prev)
+      }
+
+      toast.success(`Account ${nextStatus ? 'unblocked' : 'blocked'} successfully`)
+    } catch (err) {
+      toast.error(err.response?.data?.error || 'Failed to update account status')
+    } finally {
+      setStatusUpdatingId(null)
+    }
+  }
+
   useEffect(() => {
     fetchUsers()
   }, [])
@@ -110,12 +168,25 @@ const AdminUsers = () => {
   }
 
   const renderRole = (user) => (
+    (() => {
+      const role = getNormalizedRole(user)
+      const label = role === 'super-admin'
+        ? 'Super Admin'
+        : role === 'admin'
+          ? 'Admin'
+          : isVolunteerRole(user)
+            ? 'Volunteer'
+            : 'User'
+
+      return (
     <Chip
       icon={<Security sx={{ fontSize: 16 }} />}
-      label={user.isSuperAdmin ? 'Super Admin' : (user.role || 'User')}
-      color={user.isSuperAdmin ? 'warning' : user.role === 'admin' ? 'primary' : 'default'}
+      label={label}
+      color={role === 'super-admin' ? 'warning' : role === 'admin' ? 'primary' : 'default'}
       size="small"
     />
+      )
+    })()
   )
 
   const renderStatus = (user) => (
@@ -132,18 +203,37 @@ const AdminUsers = () => {
       u.email?.toLowerCase().includes(searchQuery.toLowerCase())
     
     const matchesTab = tabValue === 0 ? true :
-                      tabValue === 1 ? u.role === 'user' :
-                      tabValue === 2 ? u.role === 'volunteer' :
-                      u.role === 'admin' || u.isSuperAdmin
+                      tabValue === 1 ? isCitizenRole(u) :
+                      tabValue === 2 ? isVolunteerRole(u) :
+                      isAdminRole(u)
     
     return matchesSearch && matchesTab
   })
 
+  const paginatedUsers = filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+
+  const handleChangePage = (_event, newPage) => {
+    setPage(newPage)
+    setExpandedRow(null)
+  }
+
+  const handleChangeRowsPerPage = (event) => {
+    const value = parseInt(event.target.value, 10)
+    setRowsPerPage(value)
+    setPage(0)
+    setExpandedRow(null)
+  }
+
+  useEffect(() => {
+    setPage(0)
+    setExpandedRow(null)
+  }, [searchQuery, tabValue])
+
   const stats = {
     total: users.length,
-    regularUsers: users.filter(u => u.role === 'user').length,
-    volunteers: users.filter(u => u.role === 'volunteer').length,
-    admins: users.filter(u => u.role === 'admin' || u.isSuperAdmin).length
+    regularUsers: users.filter((u) => isCitizenRole(u)).length,
+    volunteers: users.filter((u) => isVolunteerRole(u)).length,
+    admins: users.filter((u) => isAdminRole(u)).length
   }
 
   return (
@@ -233,7 +323,7 @@ const AdminUsers = () => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {filteredUsers.map((user) => (
+            {paginatedUsers.map((user) => (
               <React.Fragment key={user._id}>
                 <TableRow hover sx={{ '& > *': { borderBottom: 'unset' } }}>
                   <TableCell>
@@ -281,6 +371,18 @@ const AdminUsers = () => {
                     <Button size="small" onClick={() => handleOpenDialog(user)}>
                       View Details
                     </Button>
+                    {(isCitizenRole(user) || isVolunteerRole(user)) && (
+                      <Button
+                        size="small"
+                        color={user.isActive ? 'error' : 'success'}
+                        startIcon={user.isActive ? <Block fontSize="small" /> : <LockOpen fontSize="small" />}
+                        disabled={statusUpdatingId === user._id}
+                        onClick={() => toggleUserStatus(user)}
+                        sx={{ ml: 1 }}
+                      >
+                        {statusUpdatingId === user._id ? 'Updating...' : user.isActive ? 'Block' : 'Unblock'}
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
                 <TableRow>
@@ -318,6 +420,17 @@ const AdminUsers = () => {
             )}
           </TableBody>
         </Table>
+
+        <TablePagination
+          component="div"
+          count={filteredUsers.length}
+          page={page}
+          onPageChange={handleChangePage}
+          rowsPerPage={rowsPerPage}
+          onRowsPerPageChange={handleChangeRowsPerPage}
+          rowsPerPageOptions={[14, 25, 50]}
+          sx={{ mt: 1 }}
+        />
       </Paper>
 
       {/* User Details Dialog */}
@@ -426,6 +539,16 @@ const AdminUsers = () => {
           )}
         </DialogContent>
         <DialogActions>
+          {selectedUser && (isCitizenRole(selectedUser) || isVolunteerRole(selectedUser)) && (
+            <Button
+              color={selectedUser.isActive ? 'error' : 'success'}
+              startIcon={selectedUser.isActive ? <Block /> : <LockOpen />}
+              onClick={() => toggleUserStatus(selectedUser)}
+              disabled={statusUpdatingId === selectedUser._id}
+            >
+              {statusUpdatingId === selectedUser._id ? 'Updating...' : selectedUser.isActive ? 'Block User' : 'Unblock User'}
+            </Button>
+          )}
           <Button onClick={handleCloseDialog}>Close</Button>
         </DialogActions>
       </Dialog>
