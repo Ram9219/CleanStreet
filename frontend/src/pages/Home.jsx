@@ -68,10 +68,23 @@ const StatsCard = styled(Paper, {
   border: `1px solid ${alpha(color || theme.palette.primary.main, 0.2)}`,
   padding: theme.spacing(3),
   height: '100%',
+  minHeight: 250,
+  width: '100%',
+  minWidth: 0,
+  display: 'flex',
+  flexDirection: 'column',
+  boxSizing: 'border-box',
   transition: 'all 0.4s cubic-bezier(0.4, 0, 0.2, 1)',
   cursor: 'pointer',
   position: 'relative',
   overflow: 'hidden',
+  [theme.breakpoints.down('sm')]: {
+    padding: theme.spacing(2),
+    minHeight: 230,
+  },
+  [theme.breakpoints.up('md')]: {
+    minHeight: 270,
+  },
   '&:hover': {
     transform: 'translateY(-8px) scale(1.02)',
     boxShadow: `0 20px 40px ${alpha(color || theme.palette.primary.main, 0.25)}`,
@@ -265,7 +278,7 @@ const TrustBadges = memo(() => (
   <Box sx={{ display: 'flex', alignItems: 'center', gap: { xs: 2, sm: 4 }, flexWrap: 'wrap', mt: 3 }}>
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
       <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#06D6A0', animation: `${pulseAnimation} 2s infinite` }} />
-      <Typography variant="body2" sx={{ opacity: 0.9 }}>No registration needed</Typography>
+      <Typography variant="body2" sx={{ opacity: 0.9 }}>Do Register and Report Issues</Typography>
     </Box>
     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
       <Box sx={{ width: 8, height: 8, borderRadius: '50%', bgcolor: '#06D6A0' }} />
@@ -506,8 +519,8 @@ const StatCardComponent = memo(({ stat, index }) => {
   });
 
   return (
-    <Grid item xs={12} sm={6} lg={3} ref={ref}>
-      <Grow in={inView} timeout={500} style={{ transitionDelay: `${index * 150}ms` }}>
+    <Grid item xs={12} sm={6} lg={3} ref={ref} sx={{ display: 'flex', minWidth: 0 }}>
+      <Grow in={inView} timeout={500} style={{ transitionDelay: `${index * 150}ms`, width: '100%' }}>
         <StatsCard 
           color={stat.color}
           role="article"
@@ -529,10 +542,11 @@ const StatCardComponent = memo(({ stat, index }) => {
           
           <Box sx={{ 
             display: 'flex',
-            flexDirection: { xs: 'row', sm: 'column', md: 'row' },
-            alignItems: 'center',
-            gap: { xs: 3, sm: 2, md: 3 },
-            mb: 2
+            flexDirection: { xs: 'column', md: 'row' },
+            alignItems: { xs: 'flex-start', md: 'center' },
+            gap: { xs: 1.5, md: 3 },
+            mb: 2,
+            flex: 1
           }}>
             <Box 
               className="stat-icon"
@@ -551,7 +565,7 @@ const StatCardComponent = memo(({ stat, index }) => {
             >
               {stat.icon}
             </Box>
-            <Box>
+            <Box sx={{ width: '100%' }}>
               <Typography 
                 variant="h2" 
                 component="p"
@@ -559,7 +573,7 @@ const StatCardComponent = memo(({ stat, index }) => {
                   fontWeight: 900, 
                   color: stat.color,
                   lineHeight: 1,
-                  fontSize: { xs: '2rem', sm: '2.5rem', md: '3rem' }
+                  fontSize: { xs: '1.9rem', sm: '2.5rem', md: '3rem' }
                 }}
               >
                 {stat.value}
@@ -567,7 +581,16 @@ const StatCardComponent = memo(({ stat, index }) => {
               <Typography 
                 variant="body2" 
                 color="text.secondary"
-                sx={{ mt: 0.5, fontWeight: 500 }}
+                sx={{
+                  mt: 0.5,
+                  fontWeight: 500,
+                  minHeight: { xs: 40, sm: 44 },
+                  lineHeight: 1.35,
+                  display: '-webkit-box',
+                  WebkitLineClamp: 2,
+                  WebkitBoxOrient: 'vertical',
+                  overflow: 'hidden'
+                }}
               >
                 {stat.label}
               </Typography>
@@ -583,7 +606,14 @@ const StatCardComponent = memo(({ stat, index }) => {
               bgcolor: alpha(stat.color, 0.1),
               p: 1,
               borderRadius: 2,
-              textAlign: 'center'
+              textAlign: 'center',
+              mt: 'auto',
+              minHeight: 40,
+              width: '100%',
+              boxSizing: 'border-box',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center'
             }}
           >
             {stat.change}
@@ -733,7 +763,7 @@ const Home = () => {
       description: 'Document civic problems with photos, location pins, and detailed descriptions.',
       color: '#FF6B6B',
       stats: '15K+ Issues Reported',
-      steps: ['📸 Snap Photo', '📍 Pin Location', '📝 Add Details', '🚀 Submit'],
+      steps: ['📸 Take Photo', '📍 Pin Location', '📝 Add Details', '🚀 Submit'],
       gradient: 'linear-gradient(135deg, #FF6B6B 0%, #FF8E8E 100%)',
       path: '/report-issue'
     },
@@ -994,7 +1024,7 @@ const Home = () => {
                           mb: 3
                         }}
                       >
-                        Cleaner Streets
+                        Clean Streets
                         <Box component="span" sx={{ color: '#FFD166', display: 'block' }}>
                           Better Communities
                         </Box>
@@ -1012,8 +1042,7 @@ const Home = () => {
                           lineHeight: 1.6
                         }}
                       >
-                        Join 75,000+ citizens transforming neighborhoods through civic engagement. 
-                        Report issues, track progress, and collaborate for cleaner, safer spaces.
+                        Be the change in your community. From potholes to park cleanups, connect with neighbors and local authorities to transform your streets into spaces you're proud of
                       </Typography>
                       
                       <Stack 
@@ -1300,7 +1329,7 @@ const Home = () => {
                     alignItems: 'center',
                     gap: 2 
                   }}>
-                    <Box sx={{ fontSize: { xs: 60, md: 80 } }} aria-hidden="true">🙌</Box>
+                    <Box sx={{ fontSize: { xs: 60, md: 80 } }} aria-hidden="true"></Box>
                     <Typography variant="h6" component="p" fontWeight="bold">
                       500+ Active Volunteers
                     </Typography>
@@ -1339,7 +1368,7 @@ const Home = () => {
             </Typography>
           </Box>
           
-          <Grid container spacing={3}>
+          <Grid container spacing={{ xs: 2, md: 3 }} alignItems="stretch">
             {stats.map((stat, index) => (
               <StatCardComponent key={index} stat={stat} index={index} />
             ))}
@@ -1361,7 +1390,7 @@ const Home = () => {
               Everything You Need
             </Typography>
             <Typography 
-              variant="h6" 
+              variant="h5" 
               component="p"
               color="text.secondary" 
               sx={{ 
@@ -1423,7 +1452,7 @@ const Home = () => {
             <Box
               sx={{
                 display: 'flex',
-                gap: 2,
+                gap: 3,
                 overflowX: 'auto',
                 pb: 2,
                 px: { xs: 1, sm: 2 },
@@ -1501,7 +1530,7 @@ const Home = () => {
               sx={{ 
                 p: { xs: 3, md: 6 },
                 textAlign: 'center',
-                borderRadius: 4,
+                borderRadius: 5,
                 background: theme.palette.mode === 'dark'
                   ? 'linear-gradient(135deg, #2D3748 0%, #4A5568 100%)'
                   : 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
@@ -1547,7 +1576,7 @@ const Home = () => {
                     fontSize: { xs: '1rem', md: '1.25rem' }
                   }}
                 >
-                  Join thousands of citizens creating positive change. Together, we can build cleaner, safer, and better communities.
+                 Report It. Track It. Fix It. Join 75,000+ citizens transforming neighborhoods—one issue at a time.
                 </Typography>
                 
                 <Stack 
