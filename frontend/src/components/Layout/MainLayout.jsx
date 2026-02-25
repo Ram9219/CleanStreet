@@ -733,6 +733,7 @@ import {
 import { useNavigate, useLocation } from 'react-router-dom'
 import { styled } from '@mui/material/styles'
 import logoSvg from '../../assets/images/logo.svg'
+import { getScopedPath } from '../../utils/subdomain'
 
 const drawerWidth = 280
 
@@ -988,12 +989,15 @@ const MainLayout = ({ children, toggleColorMode }) => {
     handleClose()
   }
 
+  const isVolunteerUser = user?.role === 'volunteer'
+  const resolveVolunteerPath = (path) => getScopedPath('volunteer', path)
+
   const navItems = [
     { 
       label: 'Home', 
-      path: '/home', 
+      path: resolveVolunteerPath('/home'), 
       icon: <Home />, 
-      show: user?.role === 'volunteer',
+      show: isVolunteerUser,
       color: 'primary'
     },
     { 
@@ -1005,14 +1009,14 @@ const MainLayout = ({ children, toggleColorMode }) => {
     },
     { 
       label: 'Volunteer Dashboard', 
-      path: '/dashboard', 
+      path: resolveVolunteerPath('/dashboard'), 
       icon: <Volunteer />, 
-      show: user?.role === 'volunteer',
+      show: isVolunteerUser,
       color: 'primary'
     },
     { 
       label: 'Community', 
-      path: '/community', 
+      path: isVolunteerUser ? resolveVolunteerPath('/community') : '/community', 
       icon: <LocationOn />, 
       show: true,
       color: 'warning'
@@ -1026,23 +1030,23 @@ const MainLayout = ({ children, toggleColorMode }) => {
     },
     { 
       label: 'Volunteer Reports', 
-      path: '/reports', 
+      path: resolveVolunteerPath('/reports'), 
       icon: <AssignmentTurnedIn />, 
-      show: user?.role === 'volunteer',
+      show: isVolunteerUser,
       color: 'success'
     },
     { 
       label: 'Events', 
-      path: '/events', 
+      path: resolveVolunteerPath('/events'), 
       icon: <Event />, 
-      show: user?.role === 'volunteer',
+      show: isVolunteerUser,
       color: 'secondary'
     },
     { 
       label: 'My Events', 
-      path: '/my-events', 
+      path: resolveVolunteerPath('/my-events'), 
       icon: <CalendarToday />, 
-      show: user?.role === 'volunteer',
+      show: isVolunteerUser,
       color: 'info'
     },
     { 
@@ -1075,7 +1079,7 @@ const MainLayout = ({ children, toggleColorMode }) => {
     },
     { 
       label: 'Profile', 
-      path: '/profile', 
+      path: isVolunteerUser ? resolveVolunteerPath('/profile') : '/profile', 
       icon: <Person />, 
       show: true,
       color: 'primary'
