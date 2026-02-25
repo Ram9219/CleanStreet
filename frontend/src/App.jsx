@@ -59,11 +59,23 @@ const CreateEvent = lazy(() => import('./pages/volunteer/CreateEvent'))
 import ProtectedRoute from './components/Auth/ProtectedRoute'
 import SetupRedirect from './components/Auth/SetupRedirect'
 
+const THEME_MODE_STORAGE_KEY = 'cleanstreet-theme-mode'
+
 function App() {
-  const [mode, setMode] = useState('light')
+  const [mode, setMode] = useState(() => {
+    if (typeof window === 'undefined') return 'light'
+    const storedMode = window.localStorage.getItem(THEME_MODE_STORAGE_KEY)
+    return storedMode === 'dark' ? 'dark' : 'light'
+  })
   const subdomain = getSubdomain()
   const isVolunteerSubdomain = subdomain === 'volunteer'
   const isAdminSubdomain = subdomain === 'admin'
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      window.localStorage.setItem(THEME_MODE_STORAGE_KEY, mode)
+    }
+  }, [mode])
 
   const theme = useMemo(() => createTheme({
     palette: {
@@ -222,7 +234,7 @@ function App() {
                   <Route path="/settings" element={
                     <ProtectedRoute adminOnly>
                       <AdminLayout>
-                        <AdminSettings />
+                        <AdminSettings currentMode={mode} toggleColorMode={toggleColorMode} />
                       </AdminLayout>
                     </ProtectedRoute>
                   } />
@@ -469,7 +481,7 @@ function App() {
                   <Route path="/admin/settings" element={
                     <ProtectedRoute adminOnly>
                       <AdminLayout>
-                        <AdminSettings />
+                        <AdminSettings currentMode={mode} toggleColorMode={toggleColorMode} />
                       </AdminLayout>
                     </ProtectedRoute>
                   } />

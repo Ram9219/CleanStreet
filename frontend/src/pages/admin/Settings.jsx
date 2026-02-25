@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react'
+import React, { useEffect, useRef, useState } from 'react'
 import {
   Box,
   Paper,
@@ -18,7 +18,7 @@ import PhotoCamera from '@mui/icons-material/PhotoCamera'
 import toast from 'react-hot-toast'
 import { buildApiUrl, apiClient } from '../../utils/apiClient'
 
-const AdminSettings = () => {
+const AdminSettings = ({ currentMode = 'light', toggleColorMode }) => {
   const { user, refreshUser } = useAuth()
   const [imageUploading, setImageUploading] = useState(false)
   const [passwordLoading, setPasswordLoading] = useState(false)
@@ -27,13 +27,28 @@ const AdminSettings = () => {
   const [preferences, setPreferences] = useState({
     emailNotifications: true,
     auditLogs: true,
-    darkMode: false
+    darkMode: currentMode === 'dark'
   })
 
   const [passwords, setPasswords] = useState({ current: '', next: '', confirm: '' })
   const [message, setMessage] = useState('')
 
+  useEffect(() => {
+    setPreferences((prev) => ({
+      ...prev,
+      darkMode: currentMode === 'dark'
+    }))
+  }, [currentMode])
+
   const handlePrefToggle = (key) => {
+    if (key === 'darkMode') {
+      if (typeof toggleColorMode === 'function') {
+        toggleColorMode()
+      }
+      setMessage('Dark mode preference updated locally.')
+      return
+    }
+
     setPreferences((prev) => ({ ...prev, [key]: !prev[key] }))
     setMessage('Preferences updated locally (wire to backend when ready).')
   }
