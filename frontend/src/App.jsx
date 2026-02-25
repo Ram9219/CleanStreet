@@ -108,375 +108,374 @@ function App() {
               }
             >
             <Routes>
-              {/* Volunteer Subdomain Routes */}
-              {isVolunteerSubdomain && (
+              {isVolunteerSubdomain ? (
                 <>
                   <Route path="/" element={<Navigate to="/login" />} />
-                <Route path="/login" element={<PublicLayout><VolunteerLogin /></PublicLayout>} />
-                <Route path="/register" element={<PublicLayout><VolunteerRegister /></PublicLayout>} />
-                <Route path="/forgot-password" element={<PublicLayout><VolunteerForgotPassword /></PublicLayout>} />
-                <Route path="/verify-email" element={<PublicLayout><VolunteerVerifyEmail /></PublicLayout>} />
-                <Route path="/verification-pending" element={
-                  <ProtectedRoute allowedRoles={["volunteer"]}>
-                    <MainLayout toggleColorMode={toggleColorMode}>
-                      <VolunteerVerificationPending />
-                    </MainLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/home" element={
-                  <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                    <MainLayout toggleColorMode={toggleColorMode}>
-                      <VolunteerHome />
-                    </MainLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/dashboard" element={
-                  <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                    <MainLayout toggleColorMode={toggleColorMode}>
-                      <VolunteerDashboard />
-                    </MainLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/community" element={
-                  <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                    <MainLayout toggleColorMode={toggleColorMode}>
-                      <Community />
-                    </MainLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/profile" element={
-                  <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                    <MainLayout toggleColorMode={toggleColorMode}>
-                      <VolunteerProfile />
-                    </MainLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/events" element={
-                  <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                    <MainLayout toggleColorMode={toggleColorMode}>
-                      <VolunteerEvents />
-                    </MainLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/my-events" element={
-                  <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                    <MainLayout toggleColorMode={toggleColorMode}>
-                      <MyEvents />
-                    </MainLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/create-event" element={
-                  <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                    <MainLayout toggleColorMode={toggleColorMode}>
-                      <CreateEvent />
-                    </MainLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/reports" element={
-                  <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                    <MainLayout toggleColorMode={toggleColorMode}>
-                      <VolunteerReports />
-                    </MainLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="*" element={<Navigate to="/login" />} />
-              </>
-            )}
+                  <Route path="/setup" element={<SetupWizard />} />
+                  <Route path="/login" element={<PublicLayout><VolunteerLogin /></PublicLayout>} />
+                  <Route path="/register" element={<PublicLayout><VolunteerRegister /></PublicLayout>} />
+                  <Route path="/forgot-password" element={<PublicLayout><VolunteerForgotPassword /></PublicLayout>} />
+                  <Route path="/verify-email" element={<PublicLayout><VolunteerVerifyEmail /></PublicLayout>} />
+                  <Route path="/verification-pending" element={
+                    <ProtectedRoute allowedRoles={["volunteer"]}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <VolunteerVerificationPending />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/home" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <VolunteerHome />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/dashboard" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <VolunteerDashboard />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/community" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <Community />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/profile" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <VolunteerProfile />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/events" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <VolunteerEvents />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/my-events" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <MyEvents />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/create-event" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <CreateEvent />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/reports" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <VolunteerReports />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="*" element={<Navigate to="/login" />} />
+                </>
+              ) : isAdminSubdomain ? (
+                <>
+                  <Route path="/" element={<Navigate to="/home" />} />
+                  <Route path="/setup" element={<SetupWizard />} />
+                  <Route path="/login" element={<PublicLayout><AdminLogin /></PublicLayout>} />
+                  <Route path="/change-password" element={
+                    <ProtectedRoute adminOnly>
+                      <ChangePassword />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/home" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <AdminHome />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/dashboard" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <AdminDashboard />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/users" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <AdminUsers />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/reports" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <AdminReports />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/settings" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <AdminSettings />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/pending-volunteers" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <AdminPendingVolunteers />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/volunteers" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <AdminVolunteers />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/community" element={<PublicLayout><Community /></PublicLayout>} />
+                  <Route path="*" element={<Navigate to="/home" />} />
+                </>
+              ) : (
+                <>
+                  {/* Public Routes */}
+                  <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
+                  <Route path="/setup" element={<SetupWizard />} />
+                  <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
+                  <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
+                  <Route path="/forgot-password" element={<PublicLayout><ForgotPassword /></PublicLayout>} />
+                  <Route path="/verify-email" element={<PublicLayout><VerifyEmail /></PublicLayout>} />
+                  <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
+                  <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
+                  <Route path="/terms" element={<PublicLayout><Terms /></PublicLayout>} />
+                  <Route path="/privacy" element={<PublicLayout><Privacy /></PublicLayout>} />
+                  <Route path="/community" element={<PublicLayout><Community /></PublicLayout>} />
 
-            {/* Admin Subdomain Routes */}
-            {isAdminSubdomain && (
-              <>
-                <Route path="/" element={<Navigate to="/home" />} />
-                <Route path="/setup" element={<SetupWizard />} />
-                <Route path="/login" element={<PublicLayout><AdminLogin /></PublicLayout>} />
-                <Route path="/change-password" element={
-                  <ProtectedRoute adminOnly>
-                    <ChangePassword />
-                  </ProtectedRoute>
-                } />
-                <Route path="/home" element={
-                  <ProtectedRoute adminOnly>
-                    <AdminLayout>
-                      <AdminHome />
-                    </AdminLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/dashboard" element={
-                  <ProtectedRoute adminOnly>
-                    <AdminLayout>
-                      <AdminDashboard />
-                    </AdminLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/users" element={
-                  <ProtectedRoute adminOnly>
-                    <AdminLayout>
-                      <AdminUsers />
-                    </AdminLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/reports" element={
-                  <ProtectedRoute adminOnly>
-                    <AdminLayout>
-                      <AdminReports />
-                    </AdminLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/settings" element={
-                  <ProtectedRoute adminOnly>
-                    <AdminLayout>
-                      <AdminSettings />
-                    </AdminLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/pending-volunteers" element={
-                  <ProtectedRoute adminOnly>
-                    <AdminLayout>
-                      <AdminPendingVolunteers />
-                    </AdminLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/volunteers" element={
-                  <ProtectedRoute adminOnly>
-                    <AdminLayout>
-                      <AdminVolunteers />
-                    </AdminLayout>
-                  </ProtectedRoute>
-                } />
-                <Route path="/community" element={<PublicLayout><Community /></PublicLayout>} />
-                <Route path="*" element={<Navigate to="/home" />} />
-              </>
-            )}
+                  {/* Protected User Routes */}
+                  <Route path="/profile" element={
+                    <ProtectedRoute>
+                      <PublicLayout>
+                        <Profile />
+                      </PublicLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/report-issue" element={
+                    <ProtectedRoute>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <ReportIssue />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/issues" element={<Navigate to="/community" replace />} />
+                  <Route path="/my-reports" element={
+                    <ProtectedRoute>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <Reports />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/dashboard" element={
+                    <ProtectedRoute>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <Dashboard />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/home" element={
+                    <ProtectedRoute allowedRoles={["volunteer"]}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <VolunteerHome />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/reports" element={
+                    <ProtectedRoute>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <Reports />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/map" element={
+                    <ProtectedRoute>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <Map />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/history" element={
+                    <ProtectedRoute>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <History />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/settings" element={
+                    <ProtectedRoute>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <Settings />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/activity" element={
+                    <ProtectedRoute>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <Activity />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/analytics" element={
+                    <ProtectedRoute>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <Analytics />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
 
-            {/* Public Routes */}
-            <Route path="/" element={<PublicLayout><Home /></PublicLayout>} />
-            <Route path="/setup" element={<SetupWizard />} />
-            <Route path="/login" element={<PublicLayout><Login /></PublicLayout>} />
-            <Route path="/register" element={<PublicLayout><Register /></PublicLayout>} />
-            <Route path="/forgot-password" element={<PublicLayout><ForgotPassword /></PublicLayout>} />
-            <Route path="/verify-email" element={<PublicLayout><VerifyEmail /></PublicLayout>} />
-            <Route path="/about" element={<PublicLayout><About /></PublicLayout>} />
-            <Route path="/contact" element={<PublicLayout><Contact /></PublicLayout>} />
-            <Route path="/terms" element={<PublicLayout><Terms /></PublicLayout>} />
-            <Route path="/privacy" element={<PublicLayout><Privacy /></PublicLayout>} />
-            <Route path="/community" element={<PublicLayout><Community /></PublicLayout>} />
+                  {/* Volunteer Path Routes */}
+                  <Route path="/volunteer" element={<Navigate to="/volunteer/login" />} />
+                  <Route path="/volunteer/login" element={<PublicLayout><VolunteerLogin /></PublicLayout>} />
+                  <Route path="/volunteer/register" element={<PublicLayout><VolunteerRegister /></PublicLayout>} />
+                  <Route path="/volunteer/forgot-password" element={<PublicLayout><VolunteerForgotPassword /></PublicLayout>} />
+                  <Route path="/volunteer/verify-email" element={<PublicLayout><VolunteerVerifyEmail /></PublicLayout>} />
+                  <Route path="/volunteer/verification-pending" element={
+                    <ProtectedRoute allowedRoles={["volunteer"]}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <VolunteerVerificationPending />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/volunteer/home" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <VolunteerHome />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/volunteer/dashboard" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <VolunteerDashboard />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/volunteer/community" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <Community />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/volunteer/profile" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <VolunteerProfile />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/volunteer/events" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <VolunteerEvents />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/volunteer/my-events" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <MyEvents />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/volunteer/create-event" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <CreateEvent />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/volunteer/reports" element={
+                    <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
+                      <MainLayout toggleColorMode={toggleColorMode}>
+                        <VolunteerReports />
+                      </MainLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/volunteer/*" element={<Navigate to="/volunteer/login" />} />
 
-            {/* Protected User Routes */}
-            <Route path="/profile" element={
-              <ProtectedRoute>
-                <PublicLayout>
-                  <Profile />
-                </PublicLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/report-issue" element={
-              <ProtectedRoute>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <ReportIssue />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/issues" element={<Navigate to="/community" replace />} />
-            <Route path="/my-reports" element={
-              <ProtectedRoute>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <Reports />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/dashboard" element={
-              <ProtectedRoute>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <Dashboard />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/home" element={
-              <ProtectedRoute allowedRoles={["volunteer"]}>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <VolunteerHome />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/reports" element={
-              <ProtectedRoute>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <Reports />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/map" element={
-              <ProtectedRoute>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <Map />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/history" element={
-              <ProtectedRoute>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <History />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/settings" element={
-              <ProtectedRoute>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <Settings />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/activity" element={
-              <ProtectedRoute>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <Activity />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/analytics" element={
-              <ProtectedRoute>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <Analytics />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-
-            {/* Volunteer Path Routes */}
-            <Route path="/volunteer" element={<Navigate to="/volunteer/login" />} />
-            <Route path="/volunteer/login" element={<PublicLayout><VolunteerLogin /></PublicLayout>} />
-            <Route path="/volunteer/register" element={<PublicLayout><VolunteerRegister /></PublicLayout>} />
-            <Route path="/volunteer/forgot-password" element={<PublicLayout><VolunteerForgotPassword /></PublicLayout>} />
-            <Route path="/volunteer/verify-email" element={<PublicLayout><VolunteerVerifyEmail /></PublicLayout>} />
-            <Route path="/volunteer/verification-pending" element={
-              <ProtectedRoute allowedRoles={["volunteer"]}>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <VolunteerVerificationPending />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/volunteer/home" element={
-              <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <VolunteerHome />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/volunteer/dashboard" element={
-              <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <VolunteerDashboard />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/volunteer/community" element={
-              <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <Community />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/volunteer/profile" element={
-              <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <VolunteerProfile />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/volunteer/events" element={
-              <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <VolunteerEvents />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/volunteer/my-events" element={
-              <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <MyEvents />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/volunteer/create-event" element={
-              <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <CreateEvent />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/volunteer/reports" element={
-              <ProtectedRoute allowedRoles={["volunteer", "admin", "super-admin"]} requireVolunteerVerified={true}>
-                <MainLayout toggleColorMode={toggleColorMode}>
-                  <VolunteerReports />
-                </MainLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/volunteer/*" element={<Navigate to="/volunteer/login" />} />
-
-            {/* Admin Path Routes */}
-            <Route path="/admin" element={<Navigate to="/admin/login" />} />
-            <Route path="/admin/login" element={<PublicLayout><AdminLogin /></PublicLayout>} />
-            <Route path="/admin/change-password" element={
-              <ProtectedRoute adminOnly>
-                <ChangePassword />
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/home" element={
-              <ProtectedRoute adminOnly>
-                <AdminLayout>
-                  <AdminHome />
-                </AdminLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/community" element={
-              <ProtectedRoute adminOnly>
-                <AdminLayout>
-                  <Community />
-                </AdminLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/users" element={
-              <ProtectedRoute adminOnly>
-                <AdminLayout>
-                  <AdminUsers />
-                </AdminLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/volunteers" element={
-              <ProtectedRoute adminOnly>
-                <AdminLayout>
-                  <AdminVolunteers />
-                </AdminLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/dashboard" element={
-              <ProtectedRoute adminOnly>
-                <AdminLayout>
-                  <AdminDashboard />
-                </AdminLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/reports" element={
-              <ProtectedRoute adminOnly>
-                <AdminLayout>
-                  <AdminReports />
-                </AdminLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/pending-volunteers" element={
-              <ProtectedRoute adminOnly>
-                <AdminLayout>
-                  <AdminPendingVolunteers />
-                </AdminLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="/admin/settings" element={
-              <ProtectedRoute adminOnly>
-                <AdminLayout>
-                  <AdminSettings />
-                </AdminLayout>
-              </ProtectedRoute>
-            } />
-            <Route path="*" element={<Navigate to="/" replace />} />
+                  {/* Admin Path Routes */}
+                  <Route path="/admin" element={<Navigate to="/admin/login" />} />
+                  <Route path="/admin/login" element={<PublicLayout><AdminLogin /></PublicLayout>} />
+                  <Route path="/admin/change-password" element={
+                    <ProtectedRoute adminOnly>
+                      <ChangePassword />
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/home" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <AdminHome />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/community" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <Community />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/users" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <AdminUsers />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/volunteers" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <AdminVolunteers />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/dashboard" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <AdminDashboard />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/reports" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <AdminReports />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/pending-volunteers" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <AdminPendingVolunteers />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="/admin/settings" element={
+                    <ProtectedRoute adminOnly>
+                      <AdminLayout>
+                        <AdminSettings />
+                      </AdminLayout>
+                    </ProtectedRoute>
+                  } />
+                  <Route path="*" element={<Navigate to="/" replace />} />
+                </>
+              )}
             </Routes>
             </Suspense>
           </SetupRedirect>
