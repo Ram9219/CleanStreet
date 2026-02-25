@@ -127,9 +127,6 @@ const AdminDashboard = () => {
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
   const isTablet = useMediaQuery(theme.breakpoints.down('md'))
   
-  const isAdminSubdomain = typeof window !== 'undefined' && 
-    window.location.hostname.startsWith('admin.')
-  
   const [loading, setLoading] = useState(true)
   const [users, setUsers] = useState([])
   const [filteredUsers, setFilteredUsers] = useState([])
@@ -584,8 +581,7 @@ const AdminDashboard = () => {
                 color="text.secondary"
                 onClick={(e) => {
                   e.preventDefault()
-                  const path = isAdminSubdomain ? '/home' : '/admin/home'
-                  navigate(path)
+                  navigate(getScopedPath('admin', '/home'))
                 }}
                 sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: isMobile ? '0.875rem' : '1rem' }}
               >
@@ -598,8 +594,7 @@ const AdminDashboard = () => {
                 color="text.secondary"
                 onClick={(e) => {
                   e.preventDefault()
-                  const path = isAdminSubdomain ? '/dashboard' : '/admin/dashboard'
-                  navigate(path)
+                  navigate(getScopedPath('admin', '/dashboard'))
                 }}
                 sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer', fontSize: isMobile ? '0.875rem' : '1rem' }}
               >

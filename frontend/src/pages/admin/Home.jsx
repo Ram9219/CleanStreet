@@ -30,6 +30,7 @@ import {
 } from '@mui/icons-material'
 import { useNavigate } from 'react-router-dom'
 import { apiClient } from '../../utils/apiClient'
+import { getScopedPath } from '../../utils/subdomain'
 import {
   Breadcrumbs,
   Link
@@ -49,9 +50,6 @@ const AdminHome = () => {
   const [pendingVolunteersCount, setPendingVolunteersCount] = useState(0)
   const [loading, setLoading] = useState(true)
   const [error, setError] = useState('')
-
-  const isAdminSubdomain = typeof window !== 'undefined' && 
-    window.location.hostname.startsWith('admin.')
 
   useEffect(() => {
     fetchStats()
@@ -194,7 +192,7 @@ const AdminHome = () => {
     </Paper>
   )
 
-  const adminPath = (page) => isAdminSubdomain ? `/${page}` : `/admin/${page}`
+  const adminPath = (page) => getScopedPath('admin', `/${page}`)
 
   return (
     <Box>
@@ -207,8 +205,7 @@ const AdminHome = () => {
             color="text.secondary"
             onClick={(e) => {
               e.preventDefault()
-              const path = isAdminSubdomain ? '/home' : '/admin/home'
-              navigate(path)
+              navigate(getScopedPath('admin', '/home'))
             }}
             sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
           >
@@ -221,8 +218,7 @@ const AdminHome = () => {
             color="text.secondary"
             onClick={(e) => {
               e.preventDefault()
-              const path = isAdminSubdomain ? '/dashboard' : '/admin/dashboard'
-              navigate(path)
+              navigate(getScopedPath('admin', '/dashboard'))
             }}
             sx={{ display: 'flex', alignItems: 'center', cursor: 'pointer' }}
           >

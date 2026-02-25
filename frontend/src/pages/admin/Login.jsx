@@ -10,6 +10,7 @@ import * as yup from 'yup'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { apiClient } from '../../utils/apiClient'
+import { getSubdomainUrl } from '../../utils/subdomain'
 
 const loginSchema = yup.object({
   email: yup.string().email('Invalid email').required('Email is required'),
@@ -83,7 +84,11 @@ const AdminLogin = () => {
             severity="info" 
             sx={{ mb: 3 }}
             action={
-              <Button color="inherit" size="small" href="/setup">
+              <Button
+                color="inherit"
+                size="small"
+                onClick={() => navigate('/setup')}
+              >
                 Setup
               </Button>
             }
@@ -139,7 +144,7 @@ const AdminLogin = () => {
           <Typography variant="body2" color="text.secondary">
             Regular user?{' '}
             <Link 
-              href="/login" 
+              href={getSubdomainUrl('main') + '/login'}
               underline="hover"
               sx={{ color: 'primary.main', fontWeight: 500 }}
             >

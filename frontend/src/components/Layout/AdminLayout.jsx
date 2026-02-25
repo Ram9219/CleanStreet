@@ -38,6 +38,7 @@ import {
 } from '@mui/icons-material'
 import { useNavigate, useLocation } from 'react-router-dom'
 import logoSvg from '../../assets/images/logo.svg'
+import { getScopedPath } from '../../utils/subdomain'
 
 const drawerWidth = 240
 
@@ -79,14 +80,12 @@ const AdminLayout = ({ children }) => {
     handleClose()
   }
 
-  const isAdminSubdomain = typeof window !== 'undefined' && 
-    window.location.hostname.startsWith('admin.')
-
   const resolveAdminLink = (link) => {
     if (!link) return ''
-    if (isAdminSubdomain) return link
+    if (/^https?:\/\//.test(link)) return link
     if (link.startsWith('/admin')) return link
-    return `/admin${link}`
+    const normalizedLink = link.startsWith('/') ? link : `/${link}`
+    return getScopedPath('admin', normalizedLink)
   }
 
   const fetchNotifications = useCallback(async () => {
@@ -139,42 +138,42 @@ const AdminLayout = ({ children }) => {
     { 
       text: 'Home', 
       icon: <HomeIcon />, 
-      path: isAdminSubdomain ? '/home' : '/admin/home' 
+      path: getScopedPath('admin', '/home') 
     },
     { 
       text: 'Dashboard', 
       icon: <DashboardIcon />, 
-      path: isAdminSubdomain ? '/dashboard' : '/admin/dashboard' 
+      path: getScopedPath('admin', '/dashboard') 
     },
     { 
       text: 'Pending Volunteers', 
       icon: <VolunteerIcon />, 
-      path: isAdminSubdomain ? '/pending-volunteers' : '/admin/pending-volunteers' 
+      path: getScopedPath('admin', '/pending-volunteers') 
     },
     { 
       text: 'Community', 
       icon: <GroupsIcon />, 
-      path: isAdminSubdomain ? '/community' : '/admin/community' 
+      path: getScopedPath('admin', '/community') 
     },
     { 
       text: 'Users', 
       icon: <PeopleIcon />, 
-      path: isAdminSubdomain ? '/users' : '/admin/users' 
+      path: getScopedPath('admin', '/users') 
     },
     { 
       text: 'Volunteers', 
       icon: <VolunteerIcon />, 
-      path: isAdminSubdomain ? '/volunteers' : '/admin/volunteers' 
+      path: getScopedPath('admin', '/volunteers') 
     },
     { 
       text: 'Reports', 
       icon: <AssignmentIcon />, 
-      path: isAdminSubdomain ? '/reports' : '/admin/reports' 
+      path: getScopedPath('admin', '/reports') 
     },
     { 
       text: 'Settings', 
       icon: <SettingsIcon />, 
-      path: isAdminSubdomain ? '/settings' : '/admin/settings' 
+      path: getScopedPath('admin', '/settings') 
     }
   ]
 

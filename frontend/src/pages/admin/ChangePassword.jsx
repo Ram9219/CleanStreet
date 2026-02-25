@@ -51,6 +51,7 @@ import { styled, keyframes, alpha } from '@mui/material/styles'
 import { useNavigate } from 'react-router-dom'
 import { useAuth } from '../../contexts/AuthContext'
 import { apiClient } from '../../utils/apiClient'
+import { getScopedPath } from '../../utils/subdomain'
 import toast from 'react-hot-toast'
 
 // ==================== STYLED COMPONENTS ====================
@@ -350,9 +351,7 @@ const ChangePassword = () => {
         
         // Redirect after 2 seconds
         setTimeout(() => {
-          const isAdminSubdomain = typeof window !== 'undefined' && 
-            window.location.hostname.startsWith('admin.')
-          navigate(isAdminSubdomain ? '/dashboard' : '/admin/dashboard')
+          navigate(getScopedPath('admin', '/dashboard'))
         }, 2000)
       }
     } catch (err) {

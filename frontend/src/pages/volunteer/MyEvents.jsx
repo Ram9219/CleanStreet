@@ -16,6 +16,7 @@ import toast from 'react-hot-toast'
 import dayjs from 'dayjs'
 import relativeTime from 'dayjs/plugin/relativeTime'
 import AppLoader from '../../components/Feedback/AppLoader'
+import { getScopedPath } from '../../utils/subdomain'
 
 dayjs.extend(relativeTime)
 
@@ -376,10 +377,10 @@ const MyEvents = () => {
               "No completed events yet."}
           </Typography>
           <Stack direction="row" spacing={2} justifyContent="center">
-            <Button variant="contained" href="/events">
+            <Button variant="contained" href={getScopedPath('volunteer', '/events')}>
               Browse Events
             </Button>
-            <Button variant="outlined" href="/dashboard">
+            <Button variant="outlined" href={getScopedPath('volunteer', '/dashboard')}>
               Go to Dashboard
             </Button>
           </Stack>

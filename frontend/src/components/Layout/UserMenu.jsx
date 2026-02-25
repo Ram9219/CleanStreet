@@ -20,6 +20,7 @@ import DashboardIcon from '@mui/icons-material/Dashboard'
 import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings'
 import Brightness4Icon from '@mui/icons-material/Brightness4'
 import Brightness7Icon from '@mui/icons-material/Brightness7'
+import { getScopedPath } from '../../utils/subdomain'
 
 const UserMenu = memo(({
   user = {},
@@ -54,7 +55,7 @@ const UserMenu = memo(({
       {
         icon: <AdminPanelSettingsIcon fontSize="small" />,
         label: 'Admin Dashboard',
-        action: () => onNavigate('/admin/dashboard'),
+        action: () => onNavigate(getScopedPath('admin', '/dashboard')),
         divider: false
       }
     ] : []),
