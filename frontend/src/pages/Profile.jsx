@@ -746,7 +746,7 @@ const Profile = () => {
                 </Grid>
 
                 {/* Security Section */}
-                <Box sx={{ mt: 4 }}>
+                {/* <Box sx={{ mt: 4 }}>
                   <Typography variant="h6" sx={{ fontWeight: 700, mb: 2 }}>
                     Security Settings
                   </Typography>
@@ -773,7 +773,7 @@ const Profile = () => {
                       </Grid>
                     </CardContent>
                   </InfoCard>
-                </Box>
+                </Box> */}
 
                 {/* Activity Timeline */}
                 <Box sx={{ mt: 4 }}>
