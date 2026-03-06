@@ -140,7 +140,10 @@ const Dashboard = () => {
 
         const reported = reports.length
         const resolved = reports.filter(r => r.status === 'resolved').length
-        const votes = reports.reduce((sum, r) => sum + (r.upvotes || 0), 0)
+        const votes = reports.reduce(
+          (sum, r) => sum + (r.upvotes ?? r.likes?.length ?? 0),
+          0
+        )
         const comments = user?.stats?.commentsMade || 0 // comments not returned in my-reports payload
 
         const recentActivity = reports
@@ -166,7 +169,7 @@ const Dashboard = () => {
           if (monthDiff >= 0 && monthDiff < 12) {
             const idx = 11 - monthDiff
             reportsByMonth[idx] += 1
-            engagementByMonth[idx] += (r.views || 0) + (r.upvotes || 0)
+            engagementByMonth[idx] += (r.views || 0) + (r.upvotes ?? r.likes?.length ?? 0)
           }
 
           if (r.status === 'resolved' && r.resolvedAt) {

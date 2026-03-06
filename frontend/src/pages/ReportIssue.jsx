@@ -522,7 +522,7 @@ const ReportIssue = () => {
         const { latitude, longitude } = pos.coords
         const coords = [latitude, longitude]
         setLocation(coords)
-        toast.success('📍 Location captured from your device')
+        toast.success(' Location captured from your device')
 
         try {
           const response = await fetch(
