@@ -945,6 +945,8 @@ const ReportIssue = () => {
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
+                    id="issue-title"
+                    name="title"
                     label="Issue Title"
                     value={title}
                     onChange={(e) => setTitle(e.target.value)}
@@ -968,6 +970,8 @@ const ReportIssue = () => {
                 <Grid item xs={12}>
                   <TextField
                     fullWidth
+                    id="issue-description"
+                    name="description"
                     label="Detailed Description"
                     value={description}
                     onChange={(e) => setDescription(e.target.value)}
@@ -987,8 +991,10 @@ const ReportIssue = () => {
 
                 <Grid item xs={12} sm={6}>
                   <FormControl fullWidth size={isMobile ? "small" : "medium"}>
-                    <InputLabel sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>Priority Level</InputLabel>
+                    <InputLabel id="priority-label" sx={{ fontSize: { xs: '0.875rem', sm: '1rem' } }}>Priority Level</InputLabel>
                     <Select
+                      labelId="priority-label"
+                      id="priority"
                       value={priority}
                       label="Priority Level"
                       onChange={(e) => setPriority(e.target.value)}
