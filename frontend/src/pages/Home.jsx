@@ -912,23 +912,48 @@ const Home = () => {
   return (
     <>
       <Helmet>
-        <title>Clean Streets - Better Communities | Civic Engagement Platform</title>
-        <meta name="description" content="Join 75,000+ citizens transforming neighborhoods through civic engagement. Report issues, track progress, and collaborate for cleaner, safer spaces." />
-        <meta name="keywords" content="civic engagement, community issues, report problems, neighborhood improvement, city services" />
+        <title>CleanStreet | Report Garbage & Potholes Online in India</title>
+        <meta name="description" content="Report garbage, potholes & civic issues online. CleanStreet connects 75,000+ citizens with volunteers to clean streets. Better communities, together. By Ram Kumar." />
+        <meta name="keywords" content="report garbage, report potholes, civic issues, CleanStreet, community cleanup, volunteer, street maintenance, India, Ram Kumar" />
         
         {/* Open Graph */}
-        <meta property="og:title" content="Clean Streets - Better Communities" />
-        <meta property="og:description" content="Transform your neighborhood through civic engagement" />
+        <meta property="og:title" content="CleanStreet | Report Garbage & Potholes Online" />
+        <meta property="og:description" content="Report civic issues & join 75,000+ citizens cleaning streets" />
         <meta property="og:type" content="website" />
-        <meta property="og:image" content="https://example.com/og-image.jpg" />
+        <meta property="og:url" content="https://infosys.ramkumar.app/" />
+        <meta property="og:image" content="https://infosys.ramkumar.app/og-image.png" />
         
         {/* Twitter Card */}
         <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Clean Streets - Better Communities" />
-        <meta name="twitter:description" content="Join 75,000+ citizens transforming neighborhoods" />
-        <meta name="twitter:image" content="https://example.com/twitter-image.jpg" />
+        <meta name="twitter:title" content="CleanStreet | Report Garbage & Potholes" />
+        <meta name="twitter:description" content="Report civic issues & connect with volunteers" />
+        <meta name="twitter:image" content="https://infosys.ramkumar.app/og-image.png" />
         
-        <link rel="canonical" href="https://example.com" />
+        <link rel="canonical" href="https://infosys.ramkumar.app/" />
+        
+        {/* Structured Data (Schema.org) */}
+        <script type="application/ld+json">
+          {JSON.stringify({
+            "@context": "https://schema.org",
+            "@type": "WebSite",
+            "name": "CleanStreet",
+            "url": "https://infosys.ramkumar.app/",
+            "description": "Report garbage, potholes & civic issues to improve communities",
+            "creator": {
+              "@type": "Person",
+              "name": "Ram Kumar"
+            },
+            "sameAs": [
+              "https://twitter.com/CleanStreet",
+              "https://facebook.com/CleanStreet"
+            ],
+            "potentialAction": {
+              "@type": "ReportAction",
+              "name": "Report a civic issue",
+              "target": "https://infosys.ramkumar.app/report-issue"
+            }
+          })}
+        </script>
         <html lang="en" />
       </Helmet>
 
@@ -1024,9 +1049,9 @@ const Home = () => {
                           mb: 3
                         }}
                       >
-                        Clean Streets
-                        <Box component="span" sx={{ color: '#FFD166', display: 'block' }}>
-                          Better Communities
+                        CleanStreet
+                        <Box component="span" sx={{ color: '#FFD166', display: 'block', fontSize: '0.9em' }}>
+                          Report Garbage & Potholes Online
                         </Box>
                       </Typography>
                       
@@ -1373,6 +1398,92 @@ const Home = () => {
               <StatCardComponent key={index} stat={stat} index={index} />
             ))}
           </Grid>
+        </Container>
+
+        {/* About CleanStreet - SEO Content Section */}
+        <Container maxWidth="lg" sx={{ py: { xs: 6, md: 8 }, bgcolor: 'background.paper' }}>
+          <Box sx={{ maxWidth: '800px', mx: 'auto', textAlign: 'left' }}>
+            <Typography 
+              variant="h2" 
+              component="h2"
+              sx={{ 
+                fontWeight: 700, 
+                mb: 3, 
+                fontSize: { xs: '1.8rem', md: '2.2rem' },
+                color: 'primary.main'
+              }}
+            >
+              What is CleanStreet?
+            </Typography>
+            
+            <Typography 
+              variant="body1" 
+              sx={{ 
+                mb: 2, 
+                lineHeight: 1.8, 
+                fontSize: '1.05rem', 
+                color: 'text.secondary' 
+              }}
+            >
+              CleanStreet is a citizen-powered civic engagement platform that connects communities to solve local problems. Whether it's garbage, potholes, broken streetlights, or other civic issues, CleanStreet empowers citizens to report problems and volunteers to take action.
+            </Typography>
+            
+            <Typography 
+              variant="h3" 
+              component="h3"
+              sx={{ 
+                fontWeight: 600, 
+                mt: 4, 
+                mb: 2, 
+                fontSize: '1.3rem',
+                color: 'text.primary'
+              }}
+            >
+              How CleanStreet Works
+            </Typography>
+            
+            <Typography 
+              variant="body1" 
+              component="ol" 
+              sx={{ 
+                mb: 3, 
+                lineHeight: 1.8, 
+                fontSize: '1.05rem',
+                pl: 2,
+                '& li': { mb: 1.5 }
+              }}
+            >
+              <li><strong>Report Issues:</strong> Snap a photo of garbage, potholes, or other civic problems and report them with location details</li>
+              <li><strong>Track Progress:</strong> Monitor your report in real-time as volunteers and authorities respond</li>
+              <li><strong>Join the Community:</strong> Connect with 75,000+ citizens committed to cleaner streets</li>
+              <li><strong>Volunteer:</strong> Help your community by responding to and resolving civic issues</li>
+            </Typography>
+            
+            <Typography 
+              variant="h3" 
+              component="h3"
+              sx={{ 
+                fontWeight: 600, 
+                mt: 4, 
+                mb: 2, 
+                fontSize: '1.3rem',
+                color: 'text.primary'
+              }}
+            >
+              Why Report with CleanStreet?
+            </Typography>
+            
+            <Typography 
+              variant="body1"
+              sx={{ 
+                lineHeight: 1.8, 
+                fontSize: '1.05rem',
+                color: 'text.secondary'
+              }}
+            >
+              CleanStreet bridges the gap between citizens and civic authorities. Instead of wondering if someone has noticed that pothole or pile of garbage, you can report it directly with photographic evidence, reach volunteers who care, and see real-time updates on resolution progress. Founded by Ram Kumar, CleanStreet is dedicated to making India's streets cleaner and communities stronger.
+            </Typography>
+          </Box>
         </Container>
 
         {/* Features Section */}

@@ -406,15 +406,15 @@ const Footer = memo(() => {
             <Box
               component="img"
               src={logoSvg}
-              alt="Clean Street"
+              alt="CleanStreet - Report Garbage & Potholes"
               sx={{ height: 24, width: 24 }}
             />
             <Box>
               <Typography variant="subtitle1" color="primary" sx={{ fontWeight: 700, lineHeight: 1.2 }}>
-                Clean Street
+                CleanStreet
               </Typography>
               <Typography variant="caption" color="text.secondary" sx={{ display: { xs: 'none', md: 'block' } }}>
-                Community-powered city improvement
+                Report garbage & potholes, build better communities
               </Typography>
             </Box>
           </Box>
@@ -446,7 +446,7 @@ const Footer = memo(() => {
             color="text.secondary"
             sx={{ display: { xs: 'none', md: 'block' } }}
           >
-            © {new Date().getFullYear()} Clean Street
+            © {new Date().getFullYear()} CleanStreet by Ram Kumar
           </Typography>
         </Box>
 
@@ -460,7 +460,7 @@ const Footer = memo(() => {
             display: { xs: 'block', md: 'none' }
           }}
         >
-          © {new Date().getFullYear()} Clean Street
+          © {new Date().getFullYear()} CleanStreet by Ram Kumar
         </Typography>
       </Container>
     </Box>
